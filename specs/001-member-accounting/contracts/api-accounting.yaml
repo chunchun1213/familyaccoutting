@@ -1,0 +1,500 @@
+openapi: 3.0.3
+info:
+  title: 家庭記帳 APP - 記帳功能 API
+  description: |
+    此 API 提供記帳主頁功能,包括交易記錄管理和財務概覽。
+    
+    **安全機制**:
+    - 所有端點需要 JWT Token 認證
+    - Row Level Security 確保使用者只能存取自己的資料
+    - 所有端點使用 HTTPS
+    
+    **時區**: 所有時間戳記使用 UTC 時區
+    
+    **金額格式**: 精度為小數點後 2 位,單位為新台幣(NT$)
+  version: 1.0.0
+  contact:
+    name: 家庭記帳 API 支援
+    email: support@familyaccounting.com
+
+servers:
+  - url: https://your-project.supabase.co/functions/v1
+    description: Supabase Edge Functions
+
+tags:
+  - name: 交易記錄
+    description: 交易記錄的 CRUD 操作
+  - name: 財務概覽
+    description: 財務統計與概覽
+
+security:
+  - BearerAuth: []
+
+paths:
+  /api/transactions:
+    get:
+      tags:
+        - 交易記錄
+      summary: 查詢交易記錄列表
+      description: |
+        取得當前使用者的交易記錄列表,支援分頁和排序。
+        
+        **功能**:
+        - 依時間倒序排列(最新在最上方)
+        - 支援游標分頁(cursor-based pagination)
+        - 每頁最多 100 筆記錄
+        - 收入以綠色顯示(+金額),支出以紅色顯示(-金額)
+        
+        **篩選**: 可依類型(收入/支出)、時間範圍篩選
+      operationId: getTransactions
+      parameters:
+        - name: limit
+          in: query
+          description: 每頁記錄數量,預設 20,最大 100
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+          example: 20
+        - name: cursor
+          in: query
+          description: 分頁游標(上一頁回應的 nextCursor)
+          schema:
+            type: string
+          example: "2025-11-05T10:00:00Z_550e8400-e29b-41d4-a716-446655440000"
+        - name: type
+          in: query
+          description: 篩選類型(不提供則顯示全部)
+          schema:
+            type: string
+            enum: [income, expense]
+          example: "expense"
+        - name: startDate
+          in: query
+          description: 開始日期(ISO 8601 格式)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-11-01T00:00:00Z"
+        - name: endDate
+          in: query
+          description: 結束日期(ISO 8601 格式)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-11-30T23:59:59Z"
+      responses:
+        '200':
+          description: 查詢成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionListResponse'
+              examples:
+                withData:
+                  summary: 有交易記錄
+                  value:
+                    success: true
+                    data:
+                      transactions:
+                        - id: "550e8400-e29b-41d4-a716-446655440000"
+                          type: "expense"
+                          category: "餐飲"
+                          amount: 250.00
+                          note: "午餐"
+                          createdAt: "2025-11-05T12:30:00Z"
+                        - id: "550e8400-e29b-41d4-a716-446655440001"
+                          type: "income"
+                          category: "薪資"
+                          amount: 50000.00
+                          note: "11 月薪資"
+                          createdAt: "2025-11-01T09:00:00Z"
+                      pagination:
+                        hasMore: true
+                        nextCursor: "2025-11-01T09:00:00Z_550e8400-e29b-41d4-a716-446655440001"
+                        total: 156
+                empty:
+                  summary: 無交易記錄
+                  value:
+                    success: true
+                    data:
+                      transactions: []
+                      pagination:
+                        hasMore: false
+                        nextCursor: null
+                        total: 0
+        '401':
+          description: 未授權
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+    post:
+      tags:
+        - 交易記錄
+      summary: 新增交易記錄
+      description: |
+        建立一筆新的收入或支出記錄。
+        
+        **功能**:
+        - 自動記錄當前時間(UTC)
+        - 支援離線暫存(網路恢復後自動同步)
+        - 立即更新財務概覽
+        
+        **驗證**:
+        - 金額必須 > 0 且 <= 1,000,000.00
+        - 類別必須符合預設選項
+        - 備註選填,最大 500 字元
+      operationId: createTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTransactionRequest'
+            examples:
+              expense:
+                summary: 新增支出記錄
+                value:
+                  type: "expense"
+                  category: "餐飲"
+                  amount: 250.00
+                  note: "午餐"
+              income:
+                summary: 新增收入記錄
+                value:
+                  type: "income"
+                  category: "薪資"
+                  amount: 50000.00
+                  note: "11 月薪資"
+      responses:
+        '201':
+          description: 新增成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+              examples:
+                success:
+                  summary: 新增成功
+                  value:
+                    success: true
+                    message: "記錄新增成功"
+                    data:
+                      id: "550e8400-e29b-41d4-a716-446655440000"
+                      type: "expense"
+                      category: "餐飲"
+                      amount: 250.00
+                      note: "午餐"
+                      createdAt: "2025-11-05T12:30:00Z"
+                      syncedAt: "2025-11-05T12:30:01Z"
+        '400':
+          description: 請求參數錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingAmount:
+                  summary: 缺少金額
+                  value:
+                    success: false
+                    error:
+                      code: "MISSING_AMOUNT"
+                      message: "金額為必填欄位"
+                invalidAmount:
+                  summary: 金額超過上限
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_AMOUNT"
+                      message: "單筆金額不可超過 1,000,000.00"
+                invalidCategory:
+                  summary: 無效的類別
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_CATEGORY"
+                      message: "無效的類別,請選擇預設選項"
+                      details:
+                        validCategories:
+                          expense: ["餐飲", "交通", "購物", "娛樂", "醫療", "教育", "其他"]
+                          income: ["薪資", "獎金", "投資", "兼職", "其他"]
+        '401':
+          description: 未授權
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/summary:
+    get:
+      tags:
+        - 財務概覽
+      summary: 查詢財務概覽
+      description: |
+        取得當前使用者的財務概覽,包括總收入、總支出和結餘。
+        
+        **計算邏輯**:
+        - 總收入 = SUM(所有收入記錄的金額)
+        - 總支出 = SUM(所有支出記錄的金額)
+        - 結餘 = 總收入 - 總支出
+        
+        **快取**: 計算結果快取 1 分鐘,新增記錄後立即更新
+        
+        **時間範圍**: 可選擇查詢特定時間範圍的統計
+      operationId: getFinancialSummary
+      parameters:
+        - name: startDate
+          in: query
+          description: 開始日期(不提供則統計全部)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-11-01T00:00:00Z"
+        - name: endDate
+          in: query
+          description: 結束日期(不提供則統計全部)
+          schema:
+            type: string
+            format: date-time
+          example: "2025-11-30T23:59:59Z"
+      responses:
+        '200':
+          description: 查詢成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinancialSummaryResponse'
+              examples:
+                withTransactions:
+                  summary: 有交易記錄
+                  value:
+                    success: true
+                    data:
+                      totalIncome: 50000.00
+                      totalExpense: 12350.50
+                      balance: 37649.50
+                      period:
+                        startDate: "2025-11-01T00:00:00Z"
+                        endDate: "2025-11-30T23:59:59Z"
+                noTransactions:
+                  summary: 無交易記錄(首次登入)
+                  value:
+                    success: true
+                    data:
+                      totalIncome: 0.00
+                      totalExpense: 0.00
+                      balance: 0.00
+                      period: null
+        '401':
+          description: 未授權
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Token,格式為 "Bearer {token}"
+
+  schemas:
+    CreateTransactionRequest:
+      type: object
+      required:
+        - type
+        - category
+        - amount
+      properties:
+        type:
+          type: string
+          enum: [income, expense]
+          description: 交易類型
+          example: "expense"
+        category:
+          type: string
+          description: |
+            交易類別
+            - 支出: 餐飲、交通、購物、娛樂、醫療、教育、其他
+            - 收入: 薪資、獎金、投資、兼職、其他
+          example: "餐飲"
+        amount:
+          type: number
+          format: double
+          minimum: 0.01
+          maximum: 1000000.00
+          description: 金額(精度小數點後 2 位)
+          example: 250.00
+        note:
+          type: string
+          maxLength: 500
+          description: 備註(選填)
+          example: "午餐"
+
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 交易唯一識別碼
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        type:
+          type: string
+          enum: [income, expense]
+          description: 交易類型
+          example: "expense"
+        category:
+          type: string
+          description: 交易類別
+          example: "餐飲"
+        amount:
+          type: number
+          format: double
+          description: 金額
+          example: 250.00
+        note:
+          type: string
+          description: 備註
+          example: "午餐"
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+          description: 記錄時間(UTC)
+          example: "2025-11-05T12:30:00Z"
+        syncedAt:
+          type: string
+          format: date-time
+          description: 同步到伺服器時間(離線模式使用)
+          example: "2025-11-05T12:30:01Z"
+          nullable: true
+
+    TransactionResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "記錄新增成功"
+        data:
+          $ref: '#/components/schemas/Transaction'
+
+    TransactionListResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          type: object
+          properties:
+            transactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Transaction'
+            pagination:
+              type: object
+              properties:
+                hasMore:
+                  type: boolean
+                  description: 是否還有更多記錄
+                  example: true
+                nextCursor:
+                  type: string
+                  description: 下一頁游標
+                  example: "2025-11-01T09:00:00Z_550e8400-e29b-41d4-a716-446655440001"
+                  nullable: true
+                total:
+                  type: integer
+                  description: 總記錄數
+                  example: 156
+
+    FinancialSummary:
+      type: object
+      properties:
+        totalIncome:
+          type: number
+          format: double
+          description: 總收入
+          example: 50000.00
+        totalExpense:
+          type: number
+          format: double
+          description: 總支出
+          example: 12350.50
+        balance:
+          type: number
+          format: double
+          description: 結餘(總收入 - 總支出)
+          example: 37649.50
+        period:
+          type: object
+          description: 統計時間範圍(若有指定)
+          nullable: true
+          properties:
+            startDate:
+              type: string
+              format: date-time
+              example: "2025-11-01T00:00:00Z"
+            endDate:
+              type: string
+              format: date-time
+              example: "2025-11-30T23:59:59Z"
+
+    FinancialSummaryResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        data:
+          $ref: '#/components/schemas/FinancialSummary'
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: 錯誤代碼
+              example: "INVALID_AMOUNT"
+            message:
+              type: string
+              description: 錯誤訊息(繁體中文)
+              example: "單筆金額不可超過 1,000,000.00"
+            details:
+              type: object
+              description: 額外錯誤細節(選填)
+              additionalProperties: true

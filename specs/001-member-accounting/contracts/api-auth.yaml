@@ -1,0 +1,608 @@
+openapi: 3.0.3
+info:
+  title: 家庭記帳 APP - 會員認證 API
+  description: |
+    此 API 提供會員註冊、Email 驗證、登入與登出功能。
+    
+    **安全機制**:
+    - 密碼必須符合規則: 8-20 碼、包含大寫英文、小寫英文、數字
+    - 驗證碼 5 分鐘有效期限,連續 5 次錯誤後鎖定
+    - JWT Token 7 天有效期限
+    - 所有端點使用 HTTPS
+    
+    **時區**: 所有時間戳記使用 UTC 時區
+  version: 1.0.0
+  contact:
+    name: 家庭記帳 API 支援
+    email: support@familyaccounting.com
+
+servers:
+  - url: https://your-project.supabase.co/functions/v1
+    description: Supabase Edge Functions
+
+tags:
+  - name: 註冊
+    description: 會員註冊相關操作
+  - name: 驗證
+    description: Email 驗證相關操作
+  - name: 登入
+    description: 會員登入與登出操作
+
+paths:
+  /api/register:
+    post:
+      tags:
+        - 註冊
+      summary: 註冊新會員
+      description: |
+        建立新會員帳號並發送 6 位數驗證碼到使用者 Email。
+        
+        **流程**:
+        1. 驗證 Email 格式與密碼規則
+        2. 檢查 Email 是否已被註冊
+        3. 產生 6 位數驗證碼
+        4. 發送驗證碼到使用者 Email
+        5. 儲存驗證碼(5 分鐘有效期限)
+        6. 返回等待驗證狀態
+        
+        **限制**:
+        - Email 不可重複註冊
+        - 密碼必須符合規則
+        - 同一 Email 60 秒內只能發送一次驗證碼
+      operationId: register
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              valid:
+                summary: 有效的註冊請求
+                value:
+                  name: "王小明"
+                  email: "wang@example.com"
+                  password: "MyPass123"
+                  confirmPassword: "MyPass123"
+      responses:
+        '200':
+          description: 註冊成功,驗證碼已發送
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RegisterResponse'
+              examples:
+                success:
+                  summary: 註冊成功
+                  value:
+                    success: true
+                    message: "驗證碼已發送到您的 Email,請在 5 分鐘內完成驗證"
+                    data:
+                      email: "wang@example.com"
+                      expiresAt: "2025-11-05T10:05:00Z"
+        '400':
+          description: 請求參數錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidEmail:
+                  summary: Email 格式錯誤
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_EMAIL"
+                      message: "Email 格式錯誤"
+                weakPassword:
+                  summary: 密碼不符合規則
+                  value:
+                    success: false
+                    error:
+                      code: "WEAK_PASSWORD"
+                      message: "密碼必須為 8-20 碼,且包含大寫英文、小寫英文、數字"
+                passwordMismatch:
+                  summary: 密碼不一致
+                  value:
+                    success: false
+                    error:
+                      code: "PASSWORD_MISMATCH"
+                      message: "密碼與確認密碼不一致"
+        '409':
+          description: Email 已被註冊
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                emailExists:
+                  summary: Email 已存在
+                  value:
+                    success: false
+                    error:
+                      code: "EMAIL_EXISTS"
+                      message: "此 Email 已被註冊"
+        '429':
+          description: 請求過於頻繁
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                rateLimitExceeded:
+                  summary: 超過發送頻率限制
+                  value:
+                    success: false
+                    error:
+                      code: "RATE_LIMIT_EXCEEDED"
+                      message: "請求過於頻繁,請等待 60 秒後再試"
+                      retryAfter: 60
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/verify-email:
+    post:
+      tags:
+        - 驗證
+      summary: 驗證 Email
+      description: |
+        使用 6 位數驗證碼完成 Email 驗證並建立帳號。
+        
+        **流程**:
+        1. 驗證驗證碼格式(6 位數)
+        2. 檢查驗證碼是否有效(未過期、未鎖定)
+        3. 比對驗證碼
+        4. 若正確,建立使用者帳號並設定為已驗證
+        5. 產生 JWT Token 並自動登入
+        6. 若錯誤,增加嘗試次數(5 次後鎖定)
+        
+        **限制**:
+        - 驗證碼 5 分鐘有效期限
+        - 連續 5 次錯誤後鎖定,需重新發送驗證碼
+        - 驗證成功後驗證碼失效
+      operationId: verifyEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyEmailRequest'
+            examples:
+              valid:
+                summary: 有效的驗證請求
+                value:
+                  email: "wang@example.com"
+                  code: "123456"
+      responses:
+        '200':
+          description: 驗證成功,帳號已建立並自動登入
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyEmailResponse'
+              examples:
+                success:
+                  summary: 驗證成功
+                  value:
+                    success: true
+                    message: "Email 驗證成功,歡迎加入!"
+                    data:
+                      user:
+                        id: "550e8400-e29b-41d4-a716-446655440000"
+                        name: "王小明"
+                        email: "wang@example.com"
+                        isVerified: true
+                        createdAt: "2025-11-05T10:00:00Z"
+                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      expiresAt: "2025-11-12T10:00:00Z"
+        '400':
+          description: 請求參數錯誤或驗證碼錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCode:
+                  summary: 驗證碼格式錯誤
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_CODE_FORMAT"
+                      message: "驗證碼必須為 6 位數"
+                wrongCode:
+                  summary: 驗證碼錯誤
+                  value:
+                    success: false
+                    error:
+                      code: "WRONG_CODE"
+                      message: "驗證碼錯誤,請重新輸入"
+                      remainingAttempts: 4
+                codeExpired:
+                  summary: 驗證碼已過期
+                  value:
+                    success: false
+                    error:
+                      code: "CODE_EXPIRED"
+                      message: "驗證碼已過期,請重新發送"
+                codeLocked:
+                  summary: 驗證碼已鎖定
+                  value:
+                    success: false
+                    error:
+                      code: "CODE_LOCKED"
+                      message: "驗證碼已鎖定(連續 5 次錯誤),請重新發送驗證碼"
+        '404':
+          description: 驗證碼不存在
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                codeNotFound:
+                  summary: 驗證碼不存在
+                  value:
+                    success: false
+                    error:
+                      code: "CODE_NOT_FOUND"
+                      message: "驗證碼不存在或已過期"
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/login:
+    post:
+      tags:
+        - 登入
+      summary: 會員登入
+      description: |
+        使用 Email 和密碼登入系統。
+        
+        **流程**:
+        1. 驗證 Email 和密碼格式
+        2. 查詢使用者是否存在
+        3. 比對密碼雜湊
+        4. 檢查帳號是否已完成 Email 驗證
+        5. 產生 JWT Token (7 天有效期限)
+        6. 建立 Session 記錄
+        7. 返回使用者資訊和 Token
+        
+        **安全機制**:
+        - 密碼錯誤不透露具體是 Email 或密碼錯誤
+        - 使用 bcrypt 比對密碼雜湊
+        - Token 包含使用者 ID 和過期時間
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              valid:
+                summary: 有效的登入請求
+                value:
+                  email: "wang@example.com"
+                  password: "MyPass123"
+      responses:
+        '200':
+          description: 登入成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              examples:
+                success:
+                  summary: 登入成功
+                  value:
+                    success: true
+                    message: "登入成功,歡迎回來!"
+                    data:
+                      user:
+                        id: "550e8400-e29b-41d4-a716-446655440000"
+                        name: "王小明"
+                        email: "wang@example.com"
+                        isVerified: true
+                        createdAt: "2025-11-05T10:00:00Z"
+                      token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                      expiresAt: "2025-11-12T10:00:00Z"
+        '400':
+          description: 請求參數錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidCredentials:
+                  summary: Email 或密碼錯誤
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_CREDENTIALS"
+                      message: "Email 或密碼錯誤"
+        '403':
+          description: 帳號未驗證
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                notVerified:
+                  summary: 帳號未完成驗證
+                  value:
+                    success: false
+                    error:
+                      code: "ACCOUNT_NOT_VERIFIED"
+                      message: "帳號未驗證,請完成 Email 驗證"
+                      email: "wang@example.com"
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/logout:
+    post:
+      tags:
+        - 登入
+      summary: 會員登出
+      description: |
+        登出當前會話並清除 Token。
+        
+        **流程**:
+        1. 驗證 JWT Token
+        2. 刪除對應的 Session 記錄
+        3. 返回登出成功訊息
+        
+        **注意**: 前端需同時清除本地儲存的 Token
+      operationId: logout
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 登出成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "登出成功"
+        '401':
+          description: 未授權或 Token 無效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                unauthorized:
+                  summary: 未提供 Token
+                  value:
+                    success: false
+                    error:
+                      code: "UNAUTHORIZED"
+                      message: "未授權,請先登入"
+                invalidToken:
+                  summary: Token 無效或已過期
+                  value:
+                    success: false
+                    error:
+                      code: "INVALID_TOKEN"
+                      message: "Token 無效或已過期"
+        '500':
+          description: 伺服器錯誤
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT Token,格式為 "Bearer {token}"
+
+  schemas:
+    RegisterRequest:
+      type: object
+      required:
+        - name
+        - email
+        - password
+        - confirmPassword
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: 使用者姓名
+          example: "王小明"
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          description: Email 地址
+          example: "wang@example.com"
+        password:
+          type: string
+          minLength: 8
+          maxLength: 20
+          pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,20}$'
+          description: 密碼(8-20 碼,包含大寫英文、小寫英文、數字)
+          example: "MyPass123"
+        confirmPassword:
+          type: string
+          description: 確認密碼(必須與 password 一致)
+          example: "MyPass123"
+
+    RegisterResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "驗證碼已發送到您的 Email,請在 5 分鐘內完成驗證"
+        data:
+          type: object
+          properties:
+            email:
+              type: string
+              example: "wang@example.com"
+            expiresAt:
+              type: string
+              format: date-time
+              description: 驗證碼過期時間(UTC)
+              example: "2025-11-05T10:05:00Z"
+
+    VerifyEmailRequest:
+      type: object
+      required:
+        - email
+        - code
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email 地址
+          example: "wang@example.com"
+        code:
+          type: string
+          pattern: '^\d{6}$'
+          description: 6 位數驗證碼
+          example: "123456"
+
+    VerifyEmailResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "Email 驗證成功,歡迎加入!"
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            token:
+              type: string
+              description: JWT Token
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            expiresAt:
+              type: string
+              format: date-time
+              description: Token 過期時間(UTC)
+              example: "2025-11-12T10:00:00Z"
+
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          description: Email 地址
+          example: "wang@example.com"
+        password:
+          type: string
+          description: 密碼
+          example: "MyPass123"
+
+    LoginResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: "登入成功,歡迎回來!"
+        data:
+          type: object
+          properties:
+            user:
+              $ref: '#/components/schemas/User'
+            token:
+              type: string
+              description: JWT Token
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+            expiresAt:
+              type: string
+              format: date-time
+              description: Token 過期時間(UTC)
+              example: "2025-11-12T10:00:00Z"
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: 使用者唯一識別碼
+          example: "550e8400-e29b-41d4-a716-446655440000"
+        name:
+          type: string
+          description: 使用者姓名
+          example: "王小明"
+        email:
+          type: string
+          format: email
+          description: Email 地址
+          example: "wang@example.com"
+        isVerified:
+          type: boolean
+          description: Email 驗證狀態
+          example: true
+        createdAt:
+          type: string
+          format: date-time
+          description: 建立時間(UTC)
+          example: "2025-11-05T10:00:00Z"
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+              description: 錯誤代碼
+              example: "INVALID_EMAIL"
+            message:
+              type: string
+              description: 錯誤訊息(繁體中文)
+              example: "Email 格式錯誤"
+            details:
+              type: object
+              description: 額外錯誤細節(選填)
+              additionalProperties: true
+            retryAfter:
+              type: integer
+              description: 重試等待秒數(僅 429 錯誤)
+              example: 60
+            remainingAttempts:
+              type: integer
+              description: 剩餘嘗試次數(僅驗證碼錯誤)
+              example: 4
