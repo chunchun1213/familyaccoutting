@@ -179,6 +179,10 @@ await resend.emails.send({
 
 **Dio 設定最佳實踐**:
 ```dart
+// TODO: 部署至正式環境時,將 baseUrl 更新為實際的 Supabase Project URL
+// 本地開發: http://localhost:54321
+// 正式部署: 從 Supabase Project Settings > API 取得
+// 範例: https://abcdefghijk.supabase.co
 final dio = Dio(BaseOptions(
   baseUrl: 'https://your-project.supabase.co',
   connectTimeout: Duration(seconds: 10),

@@ -241,20 +241,28 @@ nano .env
 
 ```env
 # Supabase 設定(從 supabase start 輸出取得)
+# TODO: 部署至正式環境時,更新為正式專案的 Supabase 設定值
+# 本地開發: 使用以下 localhost 值 (supabase start 輸出)
+# 正式環境: 從 Supabase Project Settings > API 取得實際值
 SUPABASE_URL=http://localhost:54321
 SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-# Email 發送服務(開發環境使用 Inbucket)
+# Email 發送服務
+# 本地開發: 使用 Inbucket (測試用,可在 http://localhost:54324 查看郵件)
+# 正式環境: 改用 resend,需設定 RESEND_API_KEY (從 https://resend.com/api-keys 取得)
 EMAIL_PROVIDER=inbucket
 INBUCKET_URL=http://localhost:54324
+# RESEND_API_KEY=re_xxxxxxxxxx  # 正式環境時取消註解並填入實際 API Key
 
 # JWT 設定
+# TODO: 正式環境時,請產生強隨機值取代預設值
+# 產生方式: openssl rand -base64 32
 JWT_SECRET=super-secret-jwt-token-with-at-least-32-characters-long
 JWT_EXPIRY=7d
 
 # 應用程式設定
-APP_ENV=development
+APP_ENV=development  # 正式環境改為 production
 ```
 
 ### 步驟 6: 部署 Edge Functions

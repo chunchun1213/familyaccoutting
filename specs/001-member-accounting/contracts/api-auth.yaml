@@ -17,6 +17,10 @@ info:
     email: support@familyaccounting.com
 
 servers:
+  # TODO: 部署至正式環境時,更新此 URL
+  # 本地開發: 使用 http://localhost:54321/functions/v1
+  # 正式部署: 從 Supabase Project Settings > API 取得 Project URL
+  # 範例: https://abcdefghijk.supabase.co/functions/v1
   - url: https://your-project.supabase.co/functions/v1
     description: Supabase Edge Functions
 
