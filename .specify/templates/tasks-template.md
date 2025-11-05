@@ -10,6 +10,12 @@ description: "Task list template for feature implementation"
 
 **Tests**: The examples below include test tasks. Tests are OPTIONAL - only include them if explicitly requested in the feature specification.
 
+**Constitution Compliance**: All tasks must adhere to principles in `.specify/memory/constitution.md`:
+- Test-First (NON-NEGOTIABLE): Tests written and failing before implementation
+- Code Quality: Linting, documentation, single responsibility
+- UX Consistency: Error handling, accessibility, user feedback
+- Performance: Optimize queries, measure benchmarks, stay within targets
+
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 
 ## Format: `[ID] [P?] [Story] Description`

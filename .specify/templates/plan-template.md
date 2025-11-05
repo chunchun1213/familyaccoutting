@@ -31,7 +31,20 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+**Required Validations** (based on `.specify/memory/constitution.md`):
+
+- [ ] **Code Quality**: Plan includes linting/formatting setup, documentation standards
+- [ ] **Testing Standards**: TDD workflow defined, test types specified (unit/integration/contract)
+- [ ] **User Experience**: Accessibility requirements noted, error handling patterns defined
+- [ ] **Performance**: Performance targets identified, benchmarks defined for this feature
+- [ ] **Quality Gates**: All 6 gates (Spec → Test → Implementation → Performance → UX → Docs) acknowledged
+
+**Performance Targets for This Feature**:
+- API endpoints: [specify expected response times or mark N/A]
+- UI interactions: [specify expected response times or mark N/A]
+- Database queries: [specify expected query times or mark N/A]
+
+**Violations Requiring Justification**: [List any constitutional requirements this feature cannot meet, with rationale]
 
 ## Project Structure
 

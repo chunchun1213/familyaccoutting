@@ -105,6 +105,11 @@
 <!--
   ACTION REQUIRED: Define measurable success criteria.
   These must be technology-agnostic and measurable.
+  
+  Per constitution, include criteria for:
+  - User experience (accessibility, consistency, error handling)
+  - Performance (load times, response times per benchmarks in constitution)
+  - Quality (test coverage, code review requirements)
 -->
 
 ### Measurable Outcomes
@@ -113,3 +118,14 @@
 - **SC-002**: [Measurable metric, e.g., "System handles 1000 concurrent users without degradation"]
 - **SC-003**: [User satisfaction metric, e.g., "90% of users successfully complete primary task on first attempt"]
 - **SC-004**: [Business metric, e.g., "Reduce support tickets related to [X] by 50%"]
+
+### Performance Criteria *(if applicable)*
+
+- **PC-001**: [Performance target, e.g., "API responds in <500ms for 95% of requests"]
+- **PC-002**: [Performance target, e.g., "Page loads in <2s on 3G connection"]
+
+### Quality Criteria
+
+- **QC-001**: Test coverage >80% for new code
+- **QC-002**: All quality gates passed (per constitution)
+- **QC-003**: Accessibility audit passed (WCAG 2.1 AA minimum)
