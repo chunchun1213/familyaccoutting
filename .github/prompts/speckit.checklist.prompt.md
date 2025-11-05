@@ -219,6 +219,15 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 To avoid clutter, use descriptive types and clean up obsolete checklists when done.
 
+## Language Requirement
+
+**CRITICAL**: Per constitution V. Documentation Language, all user-facing documentation MUST be written in Traditional Chinese (zh-TW).
+
+- The generated checklist MUST be written in Traditional Chinese
+- Category names, checklist items, purpose descriptions all in Traditional Chinese
+- Only technical references (spec section IDs, file paths) may use English
+- This is NON-NEGOTIABLE per project constitution
+
 ## Example Checklist Types & Sample Items
 
 **UX Requirements Quality:** `ux.md`

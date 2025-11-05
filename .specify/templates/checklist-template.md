@@ -1,5 +1,12 @@
 # [CHECKLIST TYPE] Checklist: [FEATURE NAME]
 
+<!--
+  ⚠️ LANGUAGE REQUIREMENT: Per constitution V. Documentation Language,
+  this checklist MUST be written in Traditional Chinese (zh-TW).
+  This template shows English placeholders for structure only.
+  Replace all content with Traditional Chinese when creating actual checklists.
+-->
+
 **Purpose**: [Brief description of what this checklist covers]
 **Created**: [DATE]
 **Feature**: [Link to spec.md or relevant documentation]

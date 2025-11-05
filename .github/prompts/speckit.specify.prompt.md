@@ -187,12 +187,22 @@ Given that feature description, do this:
 
 ## General Guidelines
 
+## Language Requirement
+
+**CRITICAL**: Per constitution V. Documentation Language, all user-facing documentation MUST be written in Traditional Chinese (zh-TW).
+
+- The generated spec.md MUST be written entirely in Traditional Chinese
+- User scenarios, requirements, success criteria all in Traditional Chinese
+- Only code examples and technical identifiers may use English
+- This is NON-NEGOTIABLE per project constitution
+
 ## Quick Guidelines
 
 - Focus on **WHAT** users need and **WHY**.
 - Avoid HOW to implement (no tech stack, APIs, code structure).
 - Written for business stakeholders, not developers.
 - DO NOT create any checklists that are embedded in the spec. That will be a separate command.
+- **All content must be in Traditional Chinese (zh-TW)** except code examples
 
 ### Section Requirements
 

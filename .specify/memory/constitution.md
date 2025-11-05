@@ -1,30 +1,37 @@
 <!--
-SYNC IMPACT REPORT - Constitution v1.0.0
+SYNC IMPACT REPORT - Constitution v1.2.0
 
-VERSION CHANGE: Initial version → 1.0.0
-BUMP RATIONALE: MAJOR - Initial constitution establishment for Family Accounting project
+VERSION CHANGE: v1.1.0 → v1.2.0
+BUMP RATIONALE: MINOR - Reverted constitution to English; clarified that constitution itself
+                        remains in English while enforcing Traditional Chinese for all
+                        user-facing documentation, specifications, and plans
 
-ADDED SECTIONS:
-- Core Principles (4 principles covering code quality, testing, UX, performance)
-  * I. Code Quality First
-  * II. Testing Standards (NON-NEGOTIABLE)
-  * III. User Experience Consistency
-  * IV. Performance Requirements
-- Performance Benchmarks (specific metrics and targets)
-- Quality Gates (development workflow checkpoints)
-- Governance (amendment procedures and compliance)
+MODIFIED PRINCIPLES:
+- V. Documentation Language: Clarified that constitution is in English but ALL specs, plans,
+  and user-facing docs must be in Traditional Chinese (zh-TW)
 
 TEMPLATES REQUIRING UPDATES:
-✅ .specify/templates/plan-template.md - Constitution Check section already present
-✅ .specify/templates/spec-template.md - Requirements align with UX/quality principles
-✅ .specify/templates/tasks-template.md - Test-first workflow matches testing standards
-⚠ Command files - No specific agent names found, generic guidance maintained
+✅ .specify/templates/plan-template.md - Constitution Check updated with language requirement
+✅ .specify/templates/spec-template.md - Header comment updated with zh-TW requirement
+✅ .specify/templates/tasks-template.md - Constitution Compliance updated with language note
+✅ .specify/templates/checklist-template.md - Header comment updated with zh-TW requirement
+✅ .github/prompts/speckit.specify.prompt.md - Language Requirement section added
+✅ .github/prompts/speckit.plan.prompt.md - Language Requirement section added
+✅ .github/prompts/speckit.tasks.prompt.md - Language Requirement section added
+✅ .github/prompts/speckit.checklist.prompt.md - Language Requirement section added
+✅ .github/prompts/speckit.clarify.prompt.md - Language Requirement section added
 
 FOLLOW-UP TODOS:
 - None - all placeholders resolved with concrete values
+- All templates and prompts updated to enforce zh-TW requirement
+- Constitution itself remains in English as governance document
 -->
 
 # Family Accounting Constitution
+
+**Note**: This constitution is maintained in English as the governance document. However,
+per Principle V, all specifications, plans, tasks, and user-facing documentation MUST be
+written in Traditional Chinese (zh-TW).
 
 ## Core Principles
 
@@ -102,6 +109,32 @@ The application MUST be fast, responsive, and efficient to ensure a smooth user 
 used frequently throughout the day; any friction compounds user dissatisfaction. Performance
 is a feature, not an afterthought.
 
+### V. Documentation Language (Traditional Chinese) - NON-NEGOTIABLE
+
+All specifications, plans, and user-facing documentation MUST be written in Traditional Chinese
+(zh-TW) to serve the target user base effectively.
+
+**Non-Negotiable Rules**:
+- Feature specifications (spec.md) MUST be written in Traditional Chinese
+- Implementation plans (plan.md) MUST be written in Traditional Chinese
+- Task lists (tasks.md) MUST be written in Traditional Chinese
+- Checklists (checklists/*.md) MUST be written in Traditional Chinese
+- User-facing documentation (README, guides, help text) MUST be in Traditional Chinese
+- UI text, error messages, and labels MUST be in Traditional Chinese
+- Code comments MAY be in English or Traditional Chinese (developer preference)
+- Technical API documentation MAY be in English for developer audience
+- Commit messages MAY be in English for version control clarity
+- **This constitution itself remains in English** as the authoritative governance document
+
+**Rationale**: This is a family accounting application targeting Traditional Chinese-speaking
+users. Documentation in their native language ensures clarity, reduces errors from
+misunderstanding, and improves adoption. Localization is not optional for core user-facing
+materials.
+
+**Exceptions**: Internal technical documentation (architecture diagrams, API schemas, code
+comments, and this constitution) may use English when it improves clarity for international
+collaboration or when working with English-based frameworks and libraries.
+
 ## Performance Benchmarks
 
 The following metrics MUST be monitored and maintained:
@@ -130,6 +163,7 @@ All features MUST pass through the following checkpoints before being considered
 - User stories are clear, prioritized, and independently testable
 - Requirements are complete with measurable success criteria
 - Edge cases and error scenarios are documented
+- **Specification is written in Traditional Chinese (zh-TW)**
 
 ### Gate 2: Test Approval
 - Test scenarios cover all acceptance criteria
@@ -151,11 +185,13 @@ All features MUST pass through the following checkpoints before being considered
 - Feature tested on target devices/browsers
 - Accessibility audit passed
 - User feedback incorporated (if applicable)
+- **UI text is in Traditional Chinese (zh-TW)**
 
 ### Gate 6: Documentation Complete
 - Public APIs documented
 - User-facing features have help text or guides
 - README and quickstart guides updated if needed
+- **All user-facing documentation is in Traditional Chinese (zh-TW)**
 
 **Failure Response**: If any gate fails, work returns to the appropriate phase. No gate may
 be skipped without explicit tech lead approval and documented justification.
@@ -181,11 +217,12 @@ Accounting project. It supersedes all other development practices and guides.
 - Constitution violations MUST be documented and justified in plan.md Complexity Tracking
 - Repeated violations without justification may result in PR rejection
 - Template files (.specify/templates/) MUST align with constitutional requirements
+- **Language compliance (Traditional Chinese for specs/plans/docs) is strictly enforced**
 
 ### Living Document
 
 This constitution evolves with the project. Developers are encouraged to propose improvements
 based on practical experience, provided they maintain the core commitment to quality, testing,
-user experience, and performance.
+user experience, performance, and language requirements.
 
-**Version**: 1.0.0 | **Ratified**: 2025-11-05 | **Last Amended**: 2025-11-05
+**Version**: 1.2.0 | **Ratified**: 2025-11-05 | **Last Amended**: 2025-11-05

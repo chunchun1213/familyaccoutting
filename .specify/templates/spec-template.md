@@ -1,5 +1,12 @@
 # Feature Specification: [FEATURE NAME]
 
+<!--
+  ⚠️ LANGUAGE REQUIREMENT: Per constitution V. Documentation Language,
+  this specification MUST be written in Traditional Chinese (zh-TW).
+  This template shows English placeholders for structure only.
+  Replace all content with Traditional Chinese when creating actual specs.
+-->
+
 **Feature Branch**: `[###-feature-name]`  
 **Created**: [DATE]  
 **Status**: Draft  

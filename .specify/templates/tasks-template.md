@@ -5,6 +5,13 @@ description: "Task list template for feature implementation"
 
 # Tasks: [FEATURE NAME]
 
+<!--
+  ⚠️ LANGUAGE REQUIREMENT: Per constitution V. Documentation Language,
+  this task list MUST be written in Traditional Chinese (zh-TW).
+  This template shows English placeholders for structure only.
+  Replace all content with Traditional Chinese when creating actual task lists.
+-->
+
 **Input**: Design documents from `/specs/[###-feature-name]/`
 **Prerequisites**: plan.md (required), spec.md (required for user stories), research.md, data-model.md, contracts/
 
@@ -15,6 +22,7 @@ description: "Task list template for feature implementation"
 - Code Quality: Linting, documentation, single responsibility
 - UX Consistency: Error handling, accessibility, user feedback
 - Performance: Optimize queries, measure benchmarks, stay within targets
+- Documentation Language: All user-facing docs and this task list in Traditional Chinese (zh-TW)
 
 **Organization**: Tasks are grouped by user story to enable independent implementation and testing of each story.
 

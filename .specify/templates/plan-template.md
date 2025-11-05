@@ -37,12 +37,19 @@
 - [ ] **Testing Standards**: TDD workflow defined, test types specified (unit/integration/contract)
 - [ ] **User Experience**: Accessibility requirements noted, error handling patterns defined
 - [ ] **Performance**: Performance targets identified, benchmarks defined for this feature
+- [ ] **Documentation Language**: This plan and all user-facing docs written in Traditional Chinese (zh-TW)
 - [ ] **Quality Gates**: All 6 gates (Spec → Test → Implementation → Performance → UX → Docs) acknowledged
 
 **Performance Targets for This Feature**:
 - API endpoints: [specify expected response times or mark N/A]
 - UI interactions: [specify expected response times or mark N/A]
 - Database queries: [specify expected query times or mark N/A]
+
+**Language Compliance**:
+- [ ] This plan.md written in Traditional Chinese
+- [ ] spec.md written in Traditional Chinese
+- [ ] tasks.md will be written in Traditional Chinese
+- [ ] User-facing documentation will be in Traditional Chinese
 
 **Violations Requiring Justification**: [List any constitutional requirements this feature cannot meet, with rationale]
 

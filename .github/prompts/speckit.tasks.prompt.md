@@ -55,6 +55,15 @@ Context for task generation: $ARGUMENTS
 
 The tasks.md should be immediately executable - each task must be specific enough that an LLM can complete it without additional context.
 
+## Language Requirement
+
+**CRITICAL**: Per constitution V. Documentation Language, all user-facing documentation MUST be written in Traditional Chinese (zh-TW).
+
+- The generated tasks.md MUST be written in Traditional Chinese
+- Task descriptions, phase explanations, checkpoints all in Traditional Chinese
+- Only file paths and technical identifiers may use English
+- This is NON-NEGOTIABLE per project constitution
+
 ## Task Generation Rules
 
 **CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.

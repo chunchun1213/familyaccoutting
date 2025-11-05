@@ -75,7 +75,17 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 **Output**: data-model.md, /contracts/*, quickstart.md, agent-specific file
 
+## Language Requirement
+
+**CRITICAL**: Per constitution V. Documentation Language, all user-facing documentation MUST be written in Traditional Chinese (zh-TW).
+
+- The generated plan.md MUST be written in Traditional Chinese
+- All design documents (research.md, data-model.md, quickstart.md) MUST be in Traditional Chinese
+- Technical context sections, API contracts may use English for technical clarity
+- This is NON-NEGOTIABLE per project constitution
+
 ## Key rules
 
 - Use absolute paths
 - ERROR on gate failures or unresolved clarifications
+- **All user-facing documentation must be in Traditional Chinese (zh-TW)**

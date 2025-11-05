@@ -175,3 +175,13 @@ Behavior rules:
 - If quota reached with unresolved high-impact categories remaining, explicitly flag them under Deferred with rationale.
 
 Context for prioritization: $ARGUMENTS
+
+## Language Requirement
+
+**CRITICAL**: Per constitution V. Documentation Language, all user-facing documentation MUST be written in Traditional Chinese (zh-TW).
+
+- When updating spec.md with clarifications, all content MUST be written in Traditional Chinese
+- Question/Answer format in Clarifications section should be in Traditional Chinese
+- When integrating answers into spec sections, write in Traditional Chinese
+- Only code examples and technical identifiers may use English
+- This is NON-NEGOTIABLE per project constitution
