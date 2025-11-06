@@ -31,12 +31,12 @@
 
 **目的**: 專案初始化和基本結構建立
 
-- [ ] T001 建立專案根目錄結構 (backend/, frontend/)
-- [ ] T002 初始化 Flutter 專案 (frontend/) 並安裝相依套件 (riverpod, dio, flutter_secure_storage, flutter_form_builder)
-- [ ] T003 [P] 初始化 Supabase 專案 (backend/supabase/) 並設定 Edge Functions 環境
-- [ ] T004 [P] 設定 Flutter linting 工具 (flutter_lints) 和格式化 (dart format)
-- [ ] T005 [P] 設定 Deno linting 工具 (deno fmt, deno lint)
-- [ ] T006 建立環境變數範本檔案 (.env.example) 並記錄必要設定
+- [X] T001 建立專案根目錄結構 (backend/, frontend/)
+- [ ] T002 初始化 Flutter 專案 (frontend/) 並安裝相依套件 (riverpod, dio, flutter_secure_storage, flutter_form_builder) - **需要先安裝 Flutter SDK**
+- [ ] T003 [P] 初始化 Supabase 專案 (backend/supabase/) 並設定 Edge Functions 環境 - **需要先安裝 Supabase CLI**
+- [X] T004 [P] 設定 Flutter linting 工具 (flutter_lints) 和格式化 (dart format) - **已建立 analysis_options.yaml**
+- [ ] T005 [P] 設定 Deno linting 工具 (deno fmt, deno lint) - **需要先安裝 Deno**
+- [X] T006 建立環境變數範本檔案 (.env.example) 並記錄必要設定
 - [ ] T007 設定 VS Code 工作區設定 (.vscode/) 包含 Flutter 和 Dart 擴充套件建議
 
 ---
@@ -49,11 +49,11 @@
 
 ### 資料庫與遷移
 
-- [ ] T008 建立資料庫遷移腳本 001_create_users.sql (backend/supabase/migrations/)
-- [ ] T009 [P] 建立資料庫遷移腳本 002_create_verification_codes.sql (backend/supabase/migrations/)
-- [ ] T010 [P] 建立資料庫遷移腳本 003_create_sessions.sql (backend/supabase/migrations/)
-- [ ] T011 [P] 建立資料庫遷移腳本 004_create_transactions.sql (backend/supabase/migrations/)
-- [ ] T012 執行所有資料庫遷移並驗證資料表建立成功
+- [X] T008 建立資料庫遷移腳本 001_create_users.sql (backend/supabase/migrations/)
+- [X] T009 [P] 建立資料庫遷移腳本 002_create_verification_codes.sql (backend/supabase/migrations/)
+- [X] T010 [P] 建立資料庫遷移腳本 003_create_sessions.sql (backend/supabase/migrations/)
+- [X] T011 [P] 建立資料庫遷移腳本 004_create_transactions.sql (backend/supabase/migrations/)
+- [ ] T012 執行所有資料庫遷移並驗證資料表建立成功 - **需要先啟動 Supabase**
 
 ### 共用工具與中介層
 
