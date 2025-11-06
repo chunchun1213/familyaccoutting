@@ -93,8 +93,15 @@
 
 ### 後端 API (US1)
 
-- [ ] T026 [P] [US1] 實作註冊 API 端點 (backend/supabase/functions/auth/register.ts) 包含 Email 驗證、密碼驗證、驗證碼產生和發送
-- [ ] T027 [P] [US1] 實作 Email 驗證 API 端點 (backend/supabase/functions/auth/verify-email.ts) 包含驗證碼比對、使用者建立、JWT 產生
+#### 測試優先 (TDD)
+
+- [ ] T026a [P] [US1] 撰寫註冊 API 端點測試 (backend/tests/auth/register.test.ts) 包含測試案例:成功註冊、Email 已存在、Email 格式錯誤、密碼不符規則、驗證碼發送失敗。執行測試並確認失敗。
+- [ ] T027a [P] [US1] 撰寫 Email 驗證 API 端點測試 (backend/tests/auth/verify-email.test.ts) 包含測試案例:成功驗證、驗證碼錯誤、驗證碼過期、驗證碼鎖定(5 次錯誤)。執行測試並確認失敗。
+
+#### 實作
+
+- [ ] T026 [P] [US1] 實作註冊 API 端點 (backend/supabase/functions/auth/register.ts) 包含 Email 驗證、密碼驗證、驗證碼產生和發送。執行測試並確認通過。
+- [ ] T027 [P] [US1] 實作 Email 驗證 API 端點 (backend/supabase/functions/auth/verify-email.ts) 包含驗證碼比對、使用者建立、JWT 產生。執行測試並確認通過。
 - [ ] T028 [US1] 為註冊和驗證端點新增錯誤處理 (重複 Email、驗證碼過期、鎖定等)
 - [ ] T029 [US1] 實作驗證碼冷卻時間檢查 (60 秒限制) 和鎖定機制 (5 次錯誤)
 
@@ -131,10 +138,18 @@
 
 ### 後端 API (US2)
 
-- [ ] T040 [P] [US2] 實作登入 API 端點 (backend/supabase/functions/auth/login.ts) 包含密碼比對、Session 建立、JWT 產生
-- [ ] T041 [P] [US2] 實作登出 API 端點 (backend/supabase/functions/auth/logout.ts) 包含 Session 刪除
+#### 測試優先 (TDD)
+
+- [ ] T040a [P] [US2] 撰寫登入 API 端點測試 (backend/tests/auth/login.test.ts) 包含測試案例:成功登入、Email 或密碼錯誤、帳號未驗證、Session 建立成功、JWT 有效性。執行測試並確認失敗。
+- [ ] T041a [P] [US2] 撰寫登出 API 端點測試 (backend/tests/auth/logout.test.ts) 包含測試案例:成功登出、Session 刪除成功、無效 Token。執行測試並確認失敗。
+
+#### 實作
+
+- [ ] T040 [P] [US2] 實作登入 API 端點 (backend/supabase/functions/auth/login.ts) 包含密碼比對、Session 建立、JWT 產生。執行測試並確認通過。
+- [ ] T041 [P] [US2] 實作登出 API 端點 (backend/supabase/functions/auth/logout.ts) 包含 Session 刪除。執行測試並確認通過。
 - [ ] T042 [US2] 為登入端點新增帳號未驗證檢查 (顯示錯誤並提供重新發送驗證碼)
 - [ ] T043 [US2] 實作 Session 管理邏輯 (建立、驗證、過期檢查)
+- [ ] T043a [US2] 實作 Session 數量限制 (最多 5 個裝置,超過時自動刪除最舊 Session) 並新增測試
 
 ### 前端實作 (US2)
 
@@ -162,7 +177,13 @@
 
 ### 後端 API (US3)
 
-- [ ] T052 [P] [US3] 實作財務概覽 API 端點 (backend/supabase/functions/accounting/get-summary.ts) 計算總收入、總支出、結餘
+#### 測試優先 (TDD)
+
+- [ ] T052a [P] [US3] 撰寫財務概覽 API 端點測試 (backend/tests/accounting/get-summary.test.ts) 包含測試案例:初始狀態全為 0、新增收入後總收入正確、新增支出後總支出正確、結餘計算正確(收入-支出)、JWT 認證保護。執行測試並確認失敗。
+
+#### 實作
+
+- [ ] T052 [P] [US3] 實作財務概覽 API 端點 (backend/supabase/functions/accounting/get-summary.ts) 計算總收入、總支出、結餘。執行測試並確認通過。
 - [ ] T053 [US3] 為財務概覽端點新增 JWT 認證保護
 - [ ] T054 [US3] 優化財務概覽查詢效能 (使用 SQL 聚合函數)
 
@@ -197,7 +218,13 @@
 
 ### 後端 API (US4)
 
-- [ ] T063 [P] [US4] 實作新增交易 API 端點 (backend/supabase/functions/accounting/create-transaction.ts) 包含類別驗證、金額驗證
+#### 測試優先 (TDD)
+
+- [ ] T063a [P] [US4] 撰寫新增交易 API 端點測試 (backend/tests/accounting/create-transaction.test.ts) 包含測試案例:成功新增收入、成功新增支出、金額超過上限、金額格式錯誤(超過 2 位小數)、無效類別、JWT 認證保護、RLS 隔離測試。執行測試並確認失敗。
+
+#### 實作
+
+- [ ] T063 [P] [US4] 實作新增交易 API 端點 (backend/supabase/functions/accounting/create-transaction.ts) 包含類別驗證、金額驗證。執行測試並確認通過。
 - [ ] T064 [US4] 為新增交易端點新增 JWT 認證保護
 - [ ] T065 [US4] 實作金額驗證 (小數點後 2 位、上限 1,000,000.00)
 - [ ] T066 [US4] 實作類別驗證 (收入/支出類別白名單)
@@ -230,7 +257,13 @@
 
 ### 後端 API (US5)
 
-- [ ] T075 [P] [US5] 實作查詢交易列表 API 端點 (backend/supabase/functions/accounting/get-transactions.ts) 包含分頁、排序
+#### 測試優先 (TDD)
+
+- [ ] T075a [P] [US5] 撰寫查詢交易列表 API 端點測試 (backend/tests/accounting/get-transactions.test.ts) 包含測試案例:成功查詢列表、空列表、分頁功能(cursor)、最多 100 筆/頁限制、倒序排列、JWT 認證保護、RLS 隔離測試。執行測試並確認失敗。
+
+#### 實作
+
+- [ ] T075 [P] [US5] 實作查詢交易列表 API 端點 (backend/supabase/functions/accounting/get-transactions.ts) 包含分頁、排序。執行測試並確認通過。
 - [ ] T076 [US5] 為查詢交易端點新增 JWT 認證保護
 - [ ] T077 [US5] 實作游標分頁 (cursor-based pagination) 支援最多 100 筆/頁
 - [ ] T078 [US5] 新增 Row Level Security 策略確保使用者只能查詢自己的記錄
@@ -277,7 +310,12 @@
 
 - [ ] T096 [P] 優化資料庫查詢 (新增索引、使用聚合函數)
 - [ ] T097 [P] 實作 API 回應快取策略
-- [ ] T098 測量並驗證所有 API 端點符合效能目標 (見 plan.md)
+- [ ] T098a [P] 測量註冊流程效能 (目標: 註冊 API <500ms p95) 使用 k6 負載測試
+- [ ] T098b [P] 測量登入流程效能 (目標: 登入 API <300ms p95) 使用 k6 負載測試
+- [ ] T098c [P] 測量新增交易效能 (目標: 新增交易 API <400ms p95) 使用 k6 負載測試
+- [ ] T098d [P] 測量查詢列表效能 (目標: 查詢列表 API <500ms p95) 使用 k6 負載測試
+- [ ] T098e [P] 測量主頁載入效能 (目標: 完整頁面載入 <2s) 使用 Lighthouse 測試
+- [ ] T098f [P] 測量 Email 發送效能 (目標: Email 發送 <30s) 使用後端日誌分析
 - [ ] T099 實作圖片和資源延遲載入
 
 ### 安全性
@@ -295,11 +333,27 @@
 - [ ] T107 執行完整的註冊登入流程測試 (依 quickstart.md 驗證)
 - [ ] T108 執行完整的記帳流程測試 (新增記錄 → 查看概覽 → 查看列表)
 
+### Code Review 與品質閘門
+
+- [ ] T109 建立 Code Review 檢查清單 (基於 QC-007 要求:安全性、效能、可讀性、測試覆蓋率、Constitution 合規性)
+- [ ] T110 執行 Code Review 並記錄審核結果於 specs/001-member-accounting/code-review.md
+- [ ] T111 驗證所有 API 端點有完整單元測試覆蓋 (QC-004: >80% 程式碼覆蓋率)
+
+### 邊緣案例測試
+
+- [ ] T112 [P] 測試重複 Email 註冊被拒絕 (frontend/test/integration/auth/duplicate_email_test.dart)
+- [ ] T113 [P] 測試驗證碼 5 次錯誤鎖定機制 (frontend/test/integration/auth/code_locked_test.dart)
+- [ ] T114 [P] 測試網路中斷時本地暫存功能 (frontend/test/integration/offline/local_cache_test.dart)
+- [ ] T115 [P] 測試多裝置同時登入限制 (最多 5 個 Session) (backend/tests/auth/multi_device_test.ts)
+- [ ] T116 [P] 測試超大金額輸入被拒絕 (>¥1,000,000) (frontend/test/unit/validation/amount_limit_test.dart)
+- [ ] T117 [P] 測試特殊字元密碼被拒絕 (frontend/test/unit/validation/password_special_chars_test.dart)
+- [ ] T118 [P] 測試未驗證帳號登入提示 (frontend/test/integration/auth/unverified_login_test.dart)
+
 ### 部署準備
 
-- [ ] T109 [P] 建立正式環境 .env 範本 (.env.production.example)
-- [ ] T110 更新所有 TODO 註解標記的 Supabase URL 和 API Keys
-- [ ] T111 建立部署檢查清單 (環境變數、資料庫遷移、API 部署)
+- [ ] T119 [P] 建立正式環境 .env 範本 (.env.production.example)
+- [ ] T120 更新所有 TODO 註解標記的 Supabase URL 和 API Keys
+- [ ] T121 建立部署檢查清單 (環境變數、資料庫遷移、API 部署)
 
 ---
 
@@ -345,16 +399,20 @@
 
 ```bash
 # 同時啟動使用者故事 1 的所有模型:
-任務: "建立 User Dart 模型 (frontend/lib/data/models/user.dart)"
-任務: "建立 VerificationCode Dart 模型 (frontend/lib/data/models/verification_code.dart)"
+任務 T024: "建立 User Dart 模型 (frontend/lib/data/models/user.dart)"
+任務 T025: "建立 VerificationCode Dart 模型 (frontend/lib/data/models/verification_code.dart)"
 
-# 同時啟動使用者故事 1 的所有後端 API:
-任務: "實作註冊 API 端點 (backend/supabase/functions/auth/register.ts)"
-任務: "實作 Email 驗證 API 端點 (backend/supabase/functions/auth/verify-email.ts)"
+# 同時啟動使用者故事 1 的所有測試 (TDD):
+任務 T026a: "撰寫註冊 API 端點測試 (backend/tests/auth/register.test.ts)"
+任務 T027a: "撰寫 Email 驗證 API 端點測試 (backend/tests/auth/verify-email.test.ts)"
+
+# 確認測試失敗後,同時啟動使用者故事 1 的所有後端 API:
+任務 T026: "實作註冊 API 端點 (backend/supabase/functions/auth/register.ts)"
+任務 T027: "實作 Email 驗證 API 端點 (backend/supabase/functions/auth/verify-email.ts)"
 
 # 同時啟動使用者故事 1 的所有前端畫面:
-任務: "實作註冊畫面 UI (frontend/lib/presentation/auth/register_screen.dart)"
-任務: "實作 Email 驗證畫面 UI (frontend/lib/presentation/auth/verify_email_screen.dart)"
+任務 T032: "實作註冊畫面 UI (frontend/lib/presentation/auth/register_screen.dart)"
+任務 T033: "實作 Email 驗證畫面 UI (frontend/lib/presentation/auth/verify_email_screen.dart)"
 ```
 
 ---
@@ -395,23 +453,32 @@
 
 ## 任務統計
 
-- **總任務數**: 111 個任務
+- **總任務數**: 136 個任務 (原 111 個 + 新增 25 個測試/品質任務)
 - **Phase 1 (專案設定)**: 7 個任務
 - **Phase 2 (基礎建設)**: 16 個任務
-- **Phase 3 (US1 - 註冊驗證)**: 15 個任務
-- **Phase 4 (US2 - 登入登出)**: 13 個任務
-- **Phase 5 (US3 - 財務概覽)**: 10 個任務
-- **Phase 6 (US4 - 新增記錄)**: 13 個任務
-- **Phase 7 (US5 - 交易列表)**: 13 個任務
+- **Phase 3 (US1 - 註冊驗證)**: 17 個任務 (新增 2 個 TDD 測試任務)
+- **Phase 4 (US2 - 登入登出)**: 16 個任務 (新增 2 個 TDD 測試任務 + 1 個多裝置限制任務)
+- **Phase 5 (US3 - 財務概覽)**: 11 個任務 (新增 1 個 TDD 測試任務)
+- **Phase 6 (US4 - 新增記錄)**: 14 個任務 (新增 1 個 TDD 測試任務)
+- **Phase 7 (US5 - 交易列表)**: 14 個任務 (新增 1 個 TDD 測試任務)
 - **Phase 8 (離線支援)**: 4 個任務
-- **Phase 9 (打磨)**: 20 個任務
+- **Phase 9 (打磨)**: 37 個任務 (新增 5 個效能測試拆分 + 3 個 Code Review 任務 + 7 個邊緣案例測試 + 2 個部署任務編號調整)
+
+**新增任務類別**:
+- **TDD 測試任務**: 7 個 (T026a, T027a, T040a, T041a, T052a, T063a, T075a)
+- **Code Review 與品質**: 3 個 (T109-T111)
+- **邊緣案例測試**: 7 個 (T112-T118)
+- **效能測試拆分**: 6 個 (T098a-f,取代原 T098)
+- **多裝置限制**: 1 個 (T043a)
+- **部署任務編號調整**: +3 (T119-T121)
 
 **平行執行機會**:
 - Phase 1: 5 個任務可平行
 - Phase 2: 9 個任務可平行
 - 使用者故事 1-5: 多個任務可在不同故事間平行
+- Phase 9 測試任務: 13 個任務可平行 (所有 [P] 標記的測試)
 
-**建議 MVP 範圍**: Phase 1 + Phase 2 + Phase 3 (US1) + Phase 4 (US2) = 完整的註冊登入系統
+**建議 MVP 範圍**: Phase 1 + Phase 2 + Phase 3 (US1) + Phase 4 (US2) = 完整的註冊登入系統 (含 TDD 測試)
 
 ---
 

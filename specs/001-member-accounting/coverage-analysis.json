@@ -1,0 +1,485 @@
+{
+  "analysis_date": "2025-11-05",
+  "documents_analyzed": {
+    "spec": "/specs/001-member-accounting/spec.md",
+    "plan": "/specs/001-member-accounting/plan.md",
+    "tasks": "/specs/001-member-accounting/tasks.md"
+  },
+  
+  "requirements_to_tasks": {
+    "FR-001": ["T032"],
+    "FR-002": ["T014", "T036"],
+    "FR-003": ["T014", "T036"],
+    "FR-004": ["T036"],
+    "FR-005": ["T026", "T028"],
+    "FR-006": ["T013", "T026"],
+    "FR-007": ["T027", "T028"],
+    "FR-008": ["T027", "T033"],
+    "FR-009": ["T029"],
+    "FR-010": ["T029", "T037"],
+    "FR-011": ["T027", "T035"],
+    "FR-012": ["T046"],
+    "FR-013": ["T040", "T047"],
+    "FR-014": ["T040", "T050"],
+    "FR-015": ["T040", "T043", "T048"],
+    "FR-016": ["T043", "T048"],
+    "FR-017": ["T041", "T049"],
+    "FR-018": ["T042", "T050"],
+    "FR-019": ["T056"],
+    "FR-020": ["T052", "T055"],
+    "FR-021": ["T052", "T055"],
+    "FR-022": ["T052", "T059", "T073"],
+    "FR-023": ["T060"],
+    "FR-024": ["T069"],
+    "FR-025": ["T069", "T070"],
+    "FR-026": ["T066", "T070"],
+    "FR-027": ["T066", "T070"],
+    "FR-028": ["T069", "T071"],
+    "FR-029": ["T069"],
+    "FR-030": ["T065", "T071"],
+    "FR-031": ["T065", "T071", "T074"],
+    "FR-032": ["T063", "T072"],
+    "FR-033": ["T071", "T074"],
+    "FR-034": ["T073"],
+    "FR-035": ["T075", "T081"],
+    "FR-036": ["T075", "T081"],
+    "FR-037": ["T083"],
+    "FR-038": ["T083"],
+    "FR-039": ["T081", "T083"],
+    "FR-040": ["T084"]
+  },
+  
+  "non_functional_requirements_to_tasks": {
+    "PC-001": ["T098"],
+    "PC-002": ["T098"],
+    "PC-003": ["T013", "T098"],
+    "PC-004": ["T098"],
+    "PC-005": ["T098"],
+    "PC-006": ["T098"],
+    "SC-001": ["T026", "T027", "T032", "T033"],
+    "SC-002": ["T040", "T046", "T048"],
+    "SC-003": ["T036", "T038", "T050"],
+    "SC-004": ["T069", "T072"],
+    "SC-005": ["T073"],
+    "SC-006": ["T036"],
+    "QC-001": ["T107", "T108"],
+    "QC-002": ["T001-T111"],
+    "QC-003": ["T092", "T093"],
+    "QC-004": ["T107", "T108"],
+    "QC-005": ["T103"],
+    "QC-006": ["T100"],
+    "QC-007": [],
+    "QC-008": ["T038", "T050", "T074"],
+    "UX-001": ["T038", "T050", "T074"],
+    "UX-002": ["T051"],
+    "UX-003": ["T023", "T061", "T087"],
+    "UX-004": ["T095"],
+    "UX-005": ["T036"],
+    "UX-006": ["T094"],
+    "UX-007": ["T093"]
+  },
+  
+  "unmapped_requirements": [
+    "QC-007"
+  ],
+  
+  "unmapped_tasks": [
+    "T002",
+    "T003",
+    "T004",
+    "T005",
+    "T006",
+    "T007",
+    "T008",
+    "T009",
+    "T010",
+    "T011",
+    "T012",
+    "T015",
+    "T016",
+    "T017",
+    "T018",
+    "T019",
+    "T020",
+    "T021",
+    "T022",
+    "T023",
+    "T024",
+    "T025",
+    "T030",
+    "T031",
+    "T034",
+    "T039",
+    "T044",
+    "T045",
+    "T053",
+    "T054",
+    "T057",
+    "T058",
+    "T062",
+    "T064",
+    "T067",
+    "T068",
+    "T076",
+    "T077",
+    "T078",
+    "T079",
+    "T080",
+    "T082",
+    "T085",
+    "T086",
+    "T088",
+    "T089",
+    "T090",
+    "T091",
+    "T096",
+    "T097",
+    "T099",
+    "T101",
+    "T102",
+    "T104",
+    "T105",
+    "T106",
+    "T109",
+    "T110",
+    "T111"
+  ],
+  
+  "ambiguous_requirements": [
+    {
+      "id": "PC-001",
+      "issue": "未定義如何測量 'p95' 百分位數,缺乏測量工具和方法說明",
+      "description": "註冊 API 回應時間 < 500ms (p95)"
+    },
+    {
+      "id": "PC-002",
+      "issue": "未定義如何測量 'p95' 百分位數,缺乏測量工具和方法說明",
+      "description": "登入 API 回應時間 < 300ms (p95)"
+    },
+    {
+      "id": "PC-003",
+      "issue": "未明確說明 '30 秒內發送' 是從哪個時間點計算(請求發送時間?處理開始時間?)",
+      "description": "Email 驗證碼必須在 30 秒內發送"
+    },
+    {
+      "id": "PC-004",
+      "issue": "未明確定義 '載入時間' 的測量起始點和結束點,以及網路條件",
+      "description": "記帳主頁載入時間 < 2 秒"
+    },
+    {
+      "id": "PC-005",
+      "issue": "未定義如何測量 'p95' 百分位數",
+      "description": "新增記錄 API 回應時間 < 400ms (p95)"
+    },
+    {
+      "id": "PC-006",
+      "issue": "未定義如何測量 'p95' 百分位數",
+      "description": "交易列表查詢 API 回應時間 < 500ms (p95)"
+    },
+    {
+      "id": "SC-001",
+      "issue": "未定義 '3 分鐘' 是否包含等待 Email 的時間,Email 延遲可能導致無法達成",
+      "description": "使用者可在 3 分鐘內完成註冊流程"
+    },
+    {
+      "id": "SC-003",
+      "issue": "'90% 的使用者' 如何測量?需要大規模使用者測試,但任務中未包含使用者測試計畫",
+      "description": "90% 的使用者能在首次嘗試時成功完成註冊和登入"
+    },
+    {
+      "id": "QC-001",
+      "issue": "'>80%' 測試覆蓋率未說明如何計算(行覆蓋?分支覆蓋?函式覆蓋?)",
+      "description": "測試覆蓋率 >80%"
+    },
+    {
+      "id": "QC-003",
+      "issue": "未明確定義 '無障礙稽核' 的執行方式、工具或檢查項目",
+      "description": "通過無障礙稽核(最低符合 WCAG 2.1 AA 標準)"
+    },
+    {
+      "id": "UX-003",
+      "issue": "'載入指示器' 的顯示時機和樣式未明確定義,缺乏具體 UX 規範",
+      "description": "載入過程必須顯示載入指示器"
+    }
+  ],
+  
+  "terminology_issues": [
+    {
+      "term1": "交易記錄",
+      "term2": "收支記錄",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "spec.md 中同時使用 '交易記錄' (FR-035~FR-040, Transaction 實體) 和 '收支記錄' (FR-024~FR-034, 使用者故事 4),概念相同但名稱不一致"
+    },
+    {
+      "term1": "記帳主頁",
+      "term2": "主頁",
+      "term3": "home_screen",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "中文名稱不一致,spec.md 使用 '記帳主頁',tasks.md 使用 'home_screen',plan.md 兩者混用"
+    },
+    {
+      "term1": "驗證碼",
+      "term2": "6 位數驗證碼",
+      "term3": "6 位數數字驗證碼",
+      "files": ["spec.md"],
+      "issue": "spec.md 中 FR-006 使用 '6 位數數字驗證碼',FR-008 使用 '6 位數驗證碼',FR-009/FR-010 僅使用 '驗證碼',描述不一致"
+    },
+    {
+      "term1": "Session",
+      "term2": "會話",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "英文和中文混用,spec.md 中同時出現 'Session(會話)' 和 '會話(session)',應統一使用方式"
+    },
+    {
+      "term1": "Email",
+      "term2": "email",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "大小寫不一致,spec.md 主要使用 'Email',但 tasks.md 的檔案名稱使用 'email.ts',應統一大小寫慣例"
+    },
+    {
+      "term1": "登出",
+      "term2": "logout",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "FR-017 使用中文 '登出',但 tasks.md T041/T049 使用英文 'logout',應統一術語"
+    },
+    {
+      "term1": "財務概覽",
+      "term2": "financial_summary",
+      "files": ["spec.md", "tasks.md"],
+      "issue": "中英文對應不一致,Widget 名稱使用 'financial_summary',但中文未統一使用 '財務概覽' 或 '財務摘要'"
+    }
+  ],
+  
+  "constitution_violations": [
+    {
+      "principle": "測試優先 (TDD)",
+      "issue": "tasks.md 中許多實作任務未明確要求先寫測試。例如 T026-T029 (後端 API)、T032-T038 (前端實作) 等,未包含 '先寫測試' 的明確步驟",
+      "severity": "high",
+      "affected_tasks": ["T026", "T027", "T032", "T033", "T040", "T046", "T052", "T063", "T075"]
+    },
+    {
+      "principle": "文件語言 (繁體中文)",
+      "issue": "tasks.md 中的任務描述混用中英文檔案名稱,例如 'register.ts'、'verify-email.ts',但未提供對應的中文說明或註解",
+      "severity": "medium",
+      "affected_tasks": ["T026", "T027", "T040", "T041", "T046", "T052", "T063", "T075"]
+    },
+    {
+      "principle": "效能基準",
+      "issue": "T098 '測量並驗證所有 API 端點符合效能目標' 任務過於籠統,未分解為具體的測量任務對應每個 API 端點 (PC-001 到 PC-006)",
+      "severity": "medium",
+      "affected_tasks": ["T098"]
+    },
+    {
+      "principle": "無障礙 (WCAG 2.1 AA)",
+      "issue": "QC-003 要求通過無障礙稽核,但 tasks.md 中僅有 T092-T095 涉及無障礙,缺乏完整的稽核流程和驗證任務",
+      "severity": "medium",
+      "affected_tasks": ["T092", "T093", "T094", "T095"]
+    },
+    {
+      "principle": "Code Review (QC-007)",
+      "issue": "QC-007 要求程式碼必須通過 Code Review,但 tasks.md 中完全沒有對應的任務或檢查點",
+      "severity": "high",
+      "affected_tasks": []
+    },
+    {
+      "principle": "安全性 (QC-005, QC-006)",
+      "issue": "QC-005 要求密碼加密儲存,QC-006 要求防止注入攻擊,但 tasks.md 中僅有 T100-T103 涉及安全性,未明確覆蓋所有需求",
+      "severity": "medium",
+      "affected_tasks": ["T100", "T101", "T102", "T103"]
+    },
+    {
+      "principle": "測試標準 (QC-004)",
+      "issue": "QC-004 要求所有 API 端點必須有單元測試和整合測試,但 tasks.md 未包含為每個 API 端點撰寫測試的明確任務",
+      "severity": "high",
+      "affected_tasks": []
+    }
+  ],
+  
+  "coverage_gaps": [
+    {
+      "requirement": "FR-002",
+      "issue": "Email 格式驗證在前端 (T036) 和後端 (T014) 都需要實作,但未明確要求保持一致性或共用驗證規則"
+    },
+    {
+      "requirement": "FR-003",
+      "issue": "密碼規則驗證同樣在前後端需要一致,但未要求共用驗證邏輯或確保規則同步"
+    },
+    {
+      "requirement": "FR-015, FR-016",
+      "issue": "會話管理涉及多個任務 (T040, T043, T048),但未有整合測試任務驗證完整的會話生命週期 (建立 → 驗證 → 過期)"
+    },
+    {
+      "requirement": "網路中斷邊緣案例",
+      "issue": "spec.md 邊緣案例 3 描述網路中斷時的處理,tasks.md Phase 8 (T088-T091) 涉及離線支援,但未包含完整的錯誤恢復和衝突解決機制"
+    },
+    {
+      "requirement": "同時多裝置登入邊緣案例",
+      "issue": "spec.md 邊緣案例 4 提到支援多裝置登入和資料同步,但 tasks.md 中沒有對應的實作任務"
+    },
+    {
+      "requirement": "帳號未驗證登入處理",
+      "issue": "FR-018 和邊緣案例 7 都提到帳號未驗證的處理,tasks.md T042 涉及此功能,但未包含重新發送驗證碼的完整流程"
+    }
+  ],
+  
+  "redundancy_issues": [
+    {
+      "tasks": ["T036", "T014"],
+      "issue": "前端即時表單驗證 (T036) 和後端共用驗證工具 (T014) 可能重複實作 Email 和密碼驗證邏輯,應考慮共用或確保一致性"
+    },
+    {
+      "tasks": ["T023", "T061", "T087"],
+      "issue": "多個任務都涉及載入指示器的實作,可能造成重複工作或不一致的 UX"
+    },
+    {
+      "tasks": ["T038", "T050", "T074"],
+      "issue": "多個任務都要求顯示繁體中文錯誤訊息,但未建立統一的錯誤訊息管理系統,可能導致訊息不一致或重複定義"
+    }
+  ],
+  
+  "priority_inconsistencies": [
+    {
+      "issue": "使用者故事優先級與任務排序不完全一致",
+      "description": "spec.md 中 US1 和 US2 都是 P1,US3 和 US4 都是 P2,US5 是 P3。tasks.md 建議依序執行 Phase 3-7,但也允許平行執行。建議明確指出 MVP 範圍應包含 P1 和 P2 (US1-US4) 還是僅 P1 (US1-US2)"
+    },
+    {
+      "issue": "Phase 9 打磨任務優先級不明確",
+      "description": "T092-T111 都在 Phase 9,但其中有些任務 (如安全性 T100-T103) 應該更早執行,而非等到最後階段"
+    }
+  ],
+  
+  "missing_test_coverage": [
+    {
+      "requirement": "所有功能需求 (FR-001 到 FR-040)",
+      "issue": "tasks.md 僅在 Phase 9 有兩個整合測試任務 (T107, T108),缺乏為每個功能需求撰寫單元測試和整合測試的明確任務"
+    },
+    {
+      "requirement": "邊緣案例測試",
+      "issue": "spec.md 定義了 7 個邊緣案例,但 tasks.md 中沒有明確的任務來測試這些邊緣案例"
+    },
+    {
+      "requirement": "效能測試",
+      "issue": "所有效能標準 (PC-001 到 PC-006) 僅由一個任務 (T098) 覆蓋,缺乏具體的效能測試腳本或基準測試任務"
+    },
+    {
+      "requirement": "使用者驗收測試",
+      "issue": "spec.md 中每個使用者故事都有詳細的驗收場景,但 tasks.md 中沒有對應的驗收測試任務"
+    }
+  ],
+  
+  "data_model_consistency": [
+    {
+      "entity": "User",
+      "issue": "spec.md 定義 User 實體包含 '帳號驗證狀態',但 tasks.md T024 僅提到 'fromJson/toJson',未明確列出所有屬性"
+    },
+    {
+      "entity": "VerificationCode",
+      "issue": "spec.md 定義包含 '使用狀態' 屬性,但 FR-009 提到的鎖定機制可能需要額外的 '錯誤次數' 欄位,未在實體定義中明確說明"
+    },
+    {
+      "entity": "Transaction",
+      "issue": "spec.md 定義金額精度為 '小數點後 2 位',但未說明資料庫儲存類型 (DECIMAL? NUMERIC? 精度為何?),可能導致實作不一致"
+    },
+    {
+      "entity": "Session",
+      "issue": "spec.md 提到 '最多 5 個裝置同時登入',但 Session 實體定義中未包含裝置識別或限制機制"
+    }
+  ],
+  
+  "api_contract_consistency": [
+    {
+      "contract_file": "contracts/api-auth.yaml",
+      "issue": "plan.md 提到此檔案應在 Phase 1 產生,但 tasks.md 中沒有對應的任務來建立或驗證此契約"
+    },
+    {
+      "contract_file": "contracts/api-accounting.yaml",
+      "issue": "同上,缺乏建立和驗證 API 契約的任務"
+    },
+    {
+      "general": "契約測試",
+      "issue": "plan.md 提到 '契約測試',但 tasks.md 中沒有明確的契約測試任務"
+    }
+  ],
+  
+  "summary": {
+    "total_requirements": 54,
+    "total_functional_requirements": 40,
+    "total_non_functional_requirements": 14,
+    "total_tasks": 111,
+    "mapped_requirements": 53,
+    "unmapped_requirements": 1,
+    "unmapped_tasks": 58,
+    "ambiguous_requirements": 11,
+    "terminology_issues": 7,
+    "constitution_violations": 7,
+    "coverage_gaps": 6,
+    "redundancy_issues": 3,
+    "priority_inconsistencies": 2,
+    "missing_test_coverage_categories": 4,
+    "data_model_inconsistencies": 4,
+    "api_contract_issues": 3
+  },
+  
+  "recommendations": [
+    {
+      "priority": "critical",
+      "action": "新增 Code Review 任務對應 QC-007",
+      "details": "在每個 Phase 結束時新增 Code Review 檢查點任務"
+    },
+    {
+      "priority": "critical",
+      "action": "為每個 API 端點新增單元測試和整合測試任務",
+      "details": "對應 QC-004,確保所有 API 端點都有完整的測試覆蓋"
+    },
+    {
+      "priority": "critical",
+      "action": "在所有實作任務中明確要求 TDD 工作流程",
+      "details": "每個實作任務應包含 '先寫測試 → 確認失敗 → 實作 → 確認通過' 的步驟"
+    },
+    {
+      "priority": "high",
+      "action": "統一術語使用",
+      "details": "建立術語表,統一 '交易記錄' vs '收支記錄'、'Email' vs 'email'、'Session' vs '會話' 等術語"
+    },
+    {
+      "priority": "high",
+      "action": "將 T098 分解為具體的效能測試任務",
+      "details": "為每個效能標準 (PC-001 到 PC-006) 建立獨立的測試任務,包含測量工具和基準設定"
+    },
+    {
+      "priority": "high",
+      "action": "新增邊緣案例測試任務",
+      "details": "為 spec.md 中定義的 7 個邊緣案例建立明確的測試任務"
+    },
+    {
+      "priority": "medium",
+      "action": "建立 API 契約文件的建立和驗證任務",
+      "details": "在 Phase 1 或 Phase 2 新增任務來建立 api-auth.yaml 和 api-accounting.yaml,並在後續 Phase 驗證實作符合契約"
+    },
+    {
+      "priority": "medium",
+      "action": "新增多裝置登入的實作任務",
+      "details": "對應邊緣案例 4,實作裝置限制和資料同步機制"
+    },
+    {
+      "priority": "medium",
+      "action": "建立統一的錯誤訊息管理系統",
+      "details": "避免在多個任務中重複定義錯誤訊息,建立集中式的錯誤訊息檔案 (i18n)"
+    },
+    {
+      "priority": "medium",
+      "action": "補充資料模型的詳細屬性定義",
+      "details": "在 data-model.md 中明確定義所有實體的完整屬性、資料類型、約束條件"
+    },
+    {
+      "priority": "low",
+      "action": "澄清模糊的效能標準",
+      "details": "明確定義如何測量 p95、載入時間的起始點和結束點、測試環境和網路條件"
+    },
+    {
+      "priority": "low",
+      "action": "將安全性任務 (T100-T103) 移到更早的 Phase",
+      "details": "安全性應該在實作過程中就考慮,而非最後階段才處理"
+    }
+  ]
+}
