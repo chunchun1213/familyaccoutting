@@ -1,8 +1,8 @@
 /**
  * Email 驗證 API
- * 
+ *
  * POST /api/verify-email
- * 
+ *
  * 驗證使用者輸入的驗證碼並建立帳號
  */
 
@@ -42,7 +42,7 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
     if (missingFields.length > 0) {
       return response.badRequest(
         'MISSING_FIELDS',
-        `缺少必要欄位: ${missingFields.join(', ')}`
+        `缺少必要欄位: ${missingFields.join(', ')}`,
       );
     }
 
@@ -75,7 +75,7 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
     if (verificationRecord.is_locked) {
       return response.badRequest(
         'CODE_LOCKED',
-        '驗證碼已被鎖定,請重新註冊'
+        '驗證碼已被鎖定,請重新註冊',
       );
     }
 
@@ -102,13 +102,13 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
       if (isLocked) {
         return response.badRequest(
           'CODE_LOCKED',
-          '驗證碼錯誤次數過多,已鎖定。請重新註冊'
+          '驗證碼錯誤次數過多,已鎖定。請重新註冊',
         );
       }
 
       return response.badRequest(
         'INVALID_CODE',
-        `驗證碼錯誤,剩餘 ${5 - newFailedAttempts} 次機會`
+        `驗證碼錯誤,剩餘 ${5 - newFailedAttempts} 次機會`,
       );
     }
 
@@ -138,10 +138,11 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
       .eq('id', verificationRecord.id);
 
     // 10. 使用 Supabase Auth 建立 session
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: email.toLowerCase(),
-      password,
-    });
+    const { data: authData, error: authError } = await supabase.auth
+      .signInWithPassword({
+        email: email.toLowerCase(),
+        password,
+      });
 
     if (authError) {
       console.error('[VerifyEmail] 建立 session 失敗:', authError);
@@ -152,7 +153,7 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
           email: newUser.email,
           name: newUser.name,
         },
-        '帳號建立成功,請使用 Email 和密碼登入'
+        '帳號建立成功,請使用 Email 和密碼登入',
       );
     }
 
@@ -166,7 +167,7 @@ async function handleVerifyEmail(req: Request): Promise<Response> {
         refreshToken: authData.session?.refresh_token,
         expiresAt: authData.session?.expires_at,
       },
-      '帳號建立成功,已自動登入'
+      '帳號建立成功,已自動登入',
     );
   } catch (error) {
     console.error('[VerifyEmail] 處理錯誤:', error);

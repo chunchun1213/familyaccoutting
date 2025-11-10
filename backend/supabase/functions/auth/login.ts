@@ -1,8 +1,8 @@
 /**
  * 會員登入 API
- * 
+ *
  * POST /api/login
- * 
+ *
  * 驗證使用者 Email 和密碼並建立 session
  */
 
@@ -38,7 +38,7 @@ async function handleLogin(req: Request): Promise<Response> {
     if (missingFields.length > 0) {
       return response.badRequest(
         'MISSING_FIELDS',
-        `缺少必要欄位: ${missingFields.join(', ')}`
+        `缺少必要欄位: ${missingFields.join(', ')}`,
       );
     }
 
@@ -71,15 +71,16 @@ async function handleLogin(req: Request): Promise<Response> {
     if (!user.email_verified) {
       return response.badRequest(
         'EMAIL_NOT_VERIFIED',
-        '請先完成 Email 驗證'
+        '請先完成 Email 驗證',
       );
     }
 
     // 6. 使用 Supabase Auth 建立 session
-    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-      email: email.toLowerCase(),
-      password,
-    });
+    const { data: authData, error: authError } = await supabase.auth
+      .signInWithPassword({
+        email: email.toLowerCase(),
+        password,
+      });
 
     if (authError || !authData.session) {
       console.error('[Login] 建立 session 失敗:', authError);
@@ -104,7 +105,7 @@ async function handleLogin(req: Request): Promise<Response> {
         refreshToken: authData.session.refresh_token,
         expiresAt: authData.session.expires_at,
       },
-      '登入成功'
+      '登入成功',
     );
   } catch (error) {
     console.error('[Login] 處理錯誤:', error);

@@ -1,8 +1,8 @@
 /**
  * 會員註冊 API
- * 
+ *
  * POST /api/register
- * 
+ *
  * 建立新會員帳號並發送驗證碼到 Email
  */
 
@@ -42,7 +42,7 @@ async function handleRegister(req: Request): Promise<Response> {
     if (missingFields.length > 0) {
       return response.badRequest(
         'MISSING_FIELDS',
-        `缺少必要欄位: ${missingFields.join(', ')}`
+        `缺少必要欄位: ${missingFields.join(', ')}`,
       );
     }
 
@@ -55,7 +55,7 @@ async function handleRegister(req: Request): Promise<Response> {
     if (!validation.isValidPassword(password)) {
       return response.badRequest(
         'WEAK_PASSWORD',
-        '密碼必須為 8-20 碼,且包含大寫英文、小寫英文、數字'
+        '密碼必須為 8-20 碼,且包含大寫英文、小寫英文、數字',
       );
     }
 
@@ -63,7 +63,7 @@ async function handleRegister(req: Request): Promise<Response> {
     if (password !== confirmPassword) {
       return response.badRequest(
         'PASSWORD_MISMATCH',
-        '密碼與確認密碼不一致'
+        '密碼與確認密碼不一致',
       );
     }
 
@@ -90,8 +90,8 @@ async function handleRegister(req: Request): Promise<Response> {
       .single();
 
     if (recentCode) {
-      const timeSinceLastCode =
-        Date.now() - new Date(recentCode.created_at).getTime();
+      const timeSinceLastCode = Date.now() -
+        new Date(recentCode.created_at).getTime();
       const cooldownMs = 60 * 1000; // 60 秒
 
       if (timeSinceLastCode < cooldownMs) {
@@ -134,7 +134,7 @@ async function handleRegister(req: Request): Promise<Response> {
         email: email.toLowerCase(),
         expiresAt: expiresAt.toISOString(),
       },
-      '驗證碼已發送到您的 Email,請在 5 分鐘內完成驗證'
+      '驗證碼已發送到您的 Email,請在 5 分鐘內完成驗證',
     );
   } catch (error) {
     console.error('[Register] 處理錯誤:', error);

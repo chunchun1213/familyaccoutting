@@ -1,6 +1,6 @@
 /**
  * JWT 認證中介層
- * 
+ *
  * 驗證請求中的 JWT Token 並取得使用者資訊
  */
 
@@ -17,7 +17,7 @@ export interface AuthUser {
 
 /**
  * 從請求標頭中驗證 JWT Token
- * 
+ *
  * @param req - 請求物件
  * @returns 使用者資訊或錯誤回應
  */
@@ -52,16 +52,16 @@ export async function verifyAuth(req: Request): Promise<AuthUser | Response> {
 
 /**
  * 包裝需要認證的處理函式
- * 
+ *
  * @param handler - 處理函式,接收 Request 和 AuthUser
  * @returns 包裝後的處理函式
  */
 export function requireAuth(
-  handler: (req: Request, user: AuthUser) => Promise<Response>
+  handler: (req: Request, user: AuthUser) => Promise<Response>,
 ): (req: Request) => Promise<Response> {
   return async (req: Request) => {
     const authResult = await verifyAuth(req);
-    
+
     // 如果驗證失敗,返回錯誤回應
     if (authResult instanceof Response) {
       return authResult;

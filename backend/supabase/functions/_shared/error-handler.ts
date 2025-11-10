@@ -1,6 +1,6 @@
 /**
  * 全域錯誤處理中介層
- * 
+ *
  * 捕捉未處理的錯誤並返回標準化的錯誤回應
  */
 
@@ -8,12 +8,12 @@ import * as response from './response.ts';
 
 /**
  * 錯誤處理包裝器
- * 
+ *
  * @param handler - 處理函式
  * @returns 包裝後的處理函式
  */
 export function withErrorHandler(
-  handler: (req: Request) => Promise<Response>
+  handler: (req: Request) => Promise<Response>,
 ): (req: Request) => Promise<Response> {
   return async (req: Request) => {
     try {
@@ -35,12 +35,12 @@ export function withErrorHandler(
 
 /**
  * CORS 標頭處理
- * 
+ *
  * @param handler - 處理函式
  * @returns 包裝後的處理函式
  */
 export function withCors(
-  handler: (req: Request) => Promise<Response>
+  handler: (req: Request) => Promise<Response>,
 ): (req: Request) => Promise<Response> {
   return async (req: Request) => {
     // 處理 OPTIONS 預檢請求
@@ -62,7 +62,10 @@ export function withCors(
     // 添加 CORS 標頭
     const headers = new Headers(response.headers);
     headers.set('Access-Control-Allow-Origin', '*');
-    headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    headers.set(
+      'Access-Control-Allow-Methods',
+      'GET, POST, PUT, DELETE, OPTIONS',
+    );
     headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
     return new Response(response.body, {
@@ -75,12 +78,12 @@ export function withCors(
 
 /**
  * 組合多個中介層
- * 
+ *
  * @param handler - 處理函式
  * @returns 包裝後的處理函式
  */
 export function withMiddleware(
-  handler: (req: Request) => Promise<Response>
+  handler: (req: Request) => Promise<Response>,
 ): (req: Request) => Promise<Response> {
   return withCors(withErrorHandler(handler));
 }

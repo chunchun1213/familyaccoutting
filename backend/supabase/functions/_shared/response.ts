@@ -1,6 +1,6 @@
 /**
  * 統一 API 回應格式
- * 
+ *
  * 所有 API 端點必須使用此模組回傳標準化的 JSON 回應
  */
 
@@ -42,7 +42,7 @@ export function error(
   code: string,
   message: string,
   details?: any,
-  retryAfter?: number
+  retryAfter?: number,
 ): Response {
   const response: ApiResponse = {
     success: false,
@@ -86,7 +86,7 @@ export const rateLimitExceeded = (retryAfter = 60) =>
     'RATE_LIMIT_EXCEEDED',
     `請求過於頻繁,請等待 ${retryAfter} 秒後再試`,
     undefined,
-    retryAfter
+    retryAfter,
   );
 
 export const internalError = (message = '伺服器內部錯誤') =>

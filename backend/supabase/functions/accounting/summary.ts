@@ -1,6 +1,6 @@
 /**
  * 財務概覽 API
- * 
+ *
  * GET /api/summary - 取得財務統計摘要
  */
 
@@ -29,7 +29,11 @@ async function handleGetSummary(req: Request): Promise<Response> {
 
       switch (period) {
         case 'day':
-          startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+          startDate = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate(),
+          );
           break;
         case 'week':
           startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -72,11 +76,11 @@ async function handleGetSummary(req: Request): Promise<Response> {
       // 計算總額
       const totalIncome = incomeData.reduce(
         (sum, t) => sum + parseFloat(t.amount),
-        0
+        0,
       );
       const totalExpense = expenseData.reduce(
         (sum, t) => sum + parseFloat(t.amount),
-        0
+        0,
       );
       const balance = totalIncome - totalExpense;
 

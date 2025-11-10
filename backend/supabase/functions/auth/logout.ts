@@ -1,8 +1,8 @@
 /**
  * 會員登出 API
- * 
+ *
  * POST /api/logout
- * 
+ *
  * 登出使用者並撤銷 session
  */
 
@@ -21,7 +21,7 @@ async function handleLogout(req: Request): Promise<Response> {
     try {
       // Supabase Auth 會自動處理 token 撤銷
       // 這裡只需返回成功回應
-      
+
       return response.success(null, '登出成功');
     } catch (error) {
       console.error('[Logout] 處理錯誤:', error);

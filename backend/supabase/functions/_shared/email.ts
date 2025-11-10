@@ -1,6 +1,6 @@
 /**
  * Email 發送服務
- * 
+ *
  * 整合 Resend API 發送各類通知 Email
  */
 
@@ -17,7 +17,7 @@ interface EmailOptions {
 
 /**
  * 發送 Email
- * 
+ *
  * @param options - Email 選項(收件者、主旨、HTML 內容)
  * @returns 是否發送成功
  */
@@ -61,7 +61,7 @@ async function sendEmail(options: EmailOptions): Promise<boolean> {
 
 /**
  * 發送驗證碼 Email
- * 
+ *
  * @param email - 收件者 Email
  * @param code - 6 位數驗證碼
  * @param name - 使用者姓名
@@ -70,7 +70,7 @@ async function sendEmail(options: EmailOptions): Promise<boolean> {
 export async function sendVerificationCode(
   email: string,
   code: string,
-  name: string
+  name: string,
 ): Promise<boolean> {
   const html = `
 <!DOCTYPE html>
@@ -116,7 +116,7 @@ export async function sendVerificationCode(
 
 /**
  * 產生 6 位數驗證碼
- * 
+ *
  * @returns 6 位數驗證碼字串
  */
 export function generateVerificationCode(): string {

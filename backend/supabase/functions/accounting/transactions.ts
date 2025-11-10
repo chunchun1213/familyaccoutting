@@ -1,6 +1,6 @@
 /**
  * 交易記錄管理 API
- * 
+ *
  * GET /api/transactions - 查詢交易記錄列表
  * POST /api/transactions - 新增交易記錄
  */
@@ -30,7 +30,7 @@ async function handleGetTransactions(req: Request): Promise<Response> {
       const url = new URL(req.url);
       const limit = Math.min(
         parseInt(url.searchParams.get('limit') || '20'),
-        100
+        100,
       );
       const cursor = url.searchParams.get('cursor');
       const type = url.searchParams.get('type');
@@ -64,7 +64,7 @@ async function handleGetTransactions(req: Request): Promise<Response> {
       if (cursor) {
         const [cursorTime, cursorId] = cursor.split('_');
         query = query.or(
-          `created_at.lt.${cursorTime},and(created_at.eq.${cursorTime},id.lt.${cursorId})`
+          `created_at.lt.${cursorTime},and(created_at.eq.${cursorTime},id.lt.${cursorId})`,
         );
       }
 
@@ -127,7 +127,7 @@ async function handleCreateTransaction(req: Request): Promise<Response> {
       if (missingFields.length > 0) {
         return response.badRequest(
           'MISSING_FIELDS',
-          `缺少必要欄位: ${missingFields.join(', ')}`
+          `缺少必要欄位: ${missingFields.join(', ')}`,
         );
       }
 
@@ -135,7 +135,7 @@ async function handleCreateTransaction(req: Request): Promise<Response> {
       if (type !== 'income' && type !== 'expense') {
         return response.badRequest(
           'INVALID_TYPE',
-          '類型必須為 income 或 expense'
+          '類型必須為 income 或 expense',
         );
       }
 
@@ -143,7 +143,7 @@ async function handleCreateTransaction(req: Request): Promise<Response> {
       if (!validation.isValidAmount(amount)) {
         return response.badRequest(
           'INVALID_AMOUNT',
-          '金額必須大於 0 且小於等於 1,000,000'
+          '金額必須大於 0 且小於等於 1,000,000',
         );
       }
 
@@ -182,7 +182,7 @@ async function handleCreateTransaction(req: Request): Promise<Response> {
           note: transaction.note,
           createdAt: transaction.created_at,
         },
-        '記錄新增成功'
+        '記錄新增成功',
       );
     } catch (error) {
       console.error('[Transactions] 處理錯誤:', error);
