@@ -11,26 +11,26 @@ dependencies:
     sdk: flutter
 
   # 狀態管理
-  flutter_riverpod: ^2.4.0
-  riverpod_annotation: ^2.3.0
+  flutter_riverpod: ^3.0.3
+  riverpod_annotation: ^3.0.3
 
   # HTTP 客戶端
   dio: ^5.4.0
 
   # 本地儲存
-  flutter_secure_storage: ^9.0.0
+  flutter_secure_storage: ^10.0.0-beta.4
   shared_preferences: ^2.2.2
 
   # 表單驗證
-  flutter_form_builder: ^9.1.0
-  form_builder_validators: ^9.1.0
+  flutter_form_builder: ^10.2.0
+  form_builder_validators: ^11.2.0
 
   # UI 元件
   cupertino_icons: ^1.0.2
 
   # 工具類
-  intl: ^0.18.1
-  freezed_annotation: ^2.4.1
+  # intl: 使用 flutter_localizations 提供的版本
+  freezed_annotation: ^3.1.0
   json_annotation: ^4.8.1
 
 dev_dependencies:
@@ -38,13 +38,13 @@ dev_dependencies:
     sdk: flutter
 
   # 程式碼品質
-  flutter_lints: ^3.0.0
+  flutter_lints: ^6.0.0
 
   # 程式碼產生
   build_runner: ^2.4.7
-  freezed: ^2.4.6
+  freezed: ^3.2.3
   json_serializable: ^6.7.1
-  riverpod_generator: ^2.3.9
+  riverpod_generator: ^3.0.3
 
   # 測試
   mockito: ^5.4.4
