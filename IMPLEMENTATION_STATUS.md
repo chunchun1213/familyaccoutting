@@ -1,73 +1,114 @@
 # 實作進度報告
 
 **功能分支**: `001-member-accounting`  
-**日期**: 2025-11-06  
-**狀態**: 專案設定階段
+**日期**: 2025-11-10  
+**狀態**: 後端 API 實作完成,待前端實作
 
 ## 當前狀態
 
-由於開發環境尚未完整設定(Flutter SDK、Deno、Supabase CLI 未安裝),已完成基礎專案結構建立和配置文件準備。
+✅ **後端完成**: Supabase + Deno Edge Functions 已完整實作
+⏳ **前端待實作**: 需要安裝 Flutter SDK 才能繼續
 
 ## 已完成任務
 
-### Phase 1: 專案設定 (部分完成)
+### Phase 1: 專案設定 (完成 5/7)
 
 - [x] **T001**: 建立專案根目錄結構 (backend/, frontend/)
-- [x] **T006**: 建立環境變數範本檔案 (.env.example)
-- [x] **基礎設定文件**:
-  - README.md - 專案說明文件
-  - SETUP.md - 環境設定指南
-  - .gitignore - Git 忽略清單
-  - frontend/pubspec.yaml - Flutter 相依套件定義
-  - frontend/analysis_options.yaml - Dart 程式碼檢查規則
+- [ ] **T002**: 初始化 Flutter 專案並安裝相依套件 - **需要 Flutter SDK**
+- [x] **T003**: 初始化 Supabase 專案並設定 Edge Functions 環境 ✨
+- [x] **T004**: 設定 Flutter linting 工具 (analysis_options.yaml)
+- [x] **T005**: 設定 Deno linting 工具 (deno.json) ✨
+- [x] **T006**: 建立環境變數檔案 (.env, .env.example)
+- [ ] **T007**: 設定 VS Code 工作區設定 - **待完成**
 
-### Phase 2: 基礎建設 (資料庫遷移)
+### Phase 2: 基礎建設 (完成 10/10) ✅
 
+#### 資料庫遷移
 - [x] **T008**: 建立資料庫遷移腳本 001_create_users.sql
 - [x] **T009**: 建立資料庫遷移腳本 002_create_verification_codes.sql
 - [x] **T010**: 建立資料庫遷移腳本 003_create_sessions.sql
 - [x] **T011**: 建立資料庫遷移腳本 004_create_transactions.sql
+- [x] **T012**: 執行資料庫遷移並驗證 ✨
+
+#### 共用工具
+- [x] **T013**: 實作 Email 發送服務 (_shared/email.ts) ✨
+- [x] **T014**: 實作共用驗證工具 (_shared/validation.ts) ✨
+- [x] **T015**: 實作統一 API 回應格式 (_shared/response.ts) ✨
+- [x] **T016**: 實作 JWT 中介層 (_shared/auth-middleware.ts) ✨
+- [x] **T017**: 實作錯誤處理中介層 (_shared/error-handler.ts) ✨
+
+### Phase 3: 認證 API (完成 4/4) ✅
+
+- [x] **註冊 API**: POST /api/register (auth/register.ts) ✨
+- [x] **驗證 API**: POST /api/verify-email (auth/verify-email.ts) ✨
+- [x] **登入 API**: POST /api/login (auth/login.ts) ✨
+- [x] **登出 API**: POST /api/logout (auth/logout.ts) ✨
+
+### Phase 4: 記帳 API (完成 2/2) ✅
+
+- [x] **交易記錄 API**: GET/POST /api/transactions (accounting/transactions.ts) ✨
+- [x] **財務概覽 API**: GET /api/summary (accounting/summary.ts) ✨
 
 ## 專案結構
 
 ```text
 familyaccoutting/
-├── backend/
-│   └── supabase/
-│       ├── config.toml                    # Supabase 設定
-│       ├── functions/                     # Edge Functions (待實作)
-│       │   ├── auth/
-│       │   ├── accounting/
-│       │   └── _shared/
-│       ├── migrations/                    # 資料庫遷移 ✓
-│       │   ├── 001_create_users.sql
-│       │   ├── 002_create_verification_codes.sql
-│       │   ├── 003_create_sessions.sql
-│       │   └── 004_create_transactions.sql
-│       ├── seed/                          # 測試資料 (待實作)
-│       └── tests/                         # 後端測試 (待實作)
-├── frontend/
+├── backend/                               # 後端 (完成) ✅
+│   ├── supabase/
+│   │   ├── config.toml                    # Supabase 設定 ✓
+│   │   ├── functions/                     # Edge Functions ✅
+│   │   │   ├── _shared/                   # 共用工具 ✓
+│   │   │   │   ├── auth-middleware.ts     # JWT 認證中介層
+│   │   │   │   ├── database.ts            # 資料庫輔助工具
+│   │   │   │   ├── email.ts               # Email 發送服務
+│   │   │   │   ├── error-handler.ts       # 錯誤處理中介層
+│   │   │   │   ├── response.ts            # 統一回應格式
+│   │   │   │   └── validation.ts          # 驗證工具
+│   │   │   ├── auth/                      # 認證 API ✓
+│   │   │   │   ├── register.ts            # 註冊
+│   │   │   │   ├── verify-email.ts        # Email 驗證
+│   │   │   │   ├── login.ts               # 登入
+│   │   │   │   └── logout.ts              # 登出
+│   │   │   ├── accounting/                # 記帳 API ✓
+│   │   │   │   ├── transactions.ts        # 交易記錄
+│   │   │   │   └── summary.ts             # 財務概覽
+│   │   │   └── deno.json                  # Deno 設定 ✓
+│   │   ├── migrations/                    # 資料庫遷移 ✓
+│   │   │   ├── 001_create_users.sql
+│   │   │   ├── 002_create_verification_codes.sql
+│   │   │   ├── 003_create_sessions.sql
+│   │   │   └── 004_create_transactions.sql
+│   │   └── seed/                          # 測試資料 (選用)
+│   ├── tests/                             # 後端測試 (待實作)
+│   └── test_register.sh                   # 測試腳本 ✓
+├── frontend/                              # 前端 (待實作) ⏳
 │   ├── pubspec.yaml                       # Flutter 相依套件 ✓
 │   ├── analysis_options.yaml              # 程式碼檢查規則 ✓
 │   └── lib/                               # 前端程式碼 (待實作)
 ├── specs/
 │   └── 001-member-accounting/             # 功能規格文件 ✓
+├── .env                                   # 環境變數 (本地) ✓
 ├── .env.example                           # 環境變數範本 ✓
 ├── .gitignore                             # Git 忽略清單 ✓
 ├── README.md                              # 專案說明 ✓
 └── SETUP.md                               # 環境設定指南 ✓
 ```
 
-## 環境需求 (待安裝)
+## 環境狀態
 
-實作需要以下開發工具,請參閱 [SETUP.md](./SETUP.md) 完成安裝:
+開發工具安裝狀態:
 
-1. **Flutter SDK** 3.16.0+
-2. **Dart SDK** 3.2.0+ (Flutter 自帶)
-3. **Deno** 1.40.0+
-4. **Supabase CLI** 1.127.0+
-5. **Docker Desktop** (用於本地 Supabase 環境)
-6. **Git** 2.30.0+
+1. ❌ **Flutter SDK** 3.16.0+ - **未安裝** (前端實作需要)
+2. ❌ **Dart SDK** 3.2.0+ - **未安裝** (Flutter 自帶)
+3. ✅ **Deno** 2.5.6 - **已安裝**
+4. ✅ **Supabase CLI** 2.54.11 - **已安裝**
+5. ✅ **Docker Desktop** 28.5.1 - **已安裝並運行**
+6. ✅ **Git** 2.30.0+ - **已安裝**
+
+**Supabase 服務狀態**: ✅ 運行中
+- API URL: http://127.0.0.1:54321
+- Studio URL: http://127.0.0.1:54323
+- Database: postgresql://postgres:postgres@127.0.0.1:54322/postgres
 
 ## 下一步行動
 
