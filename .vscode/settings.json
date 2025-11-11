@@ -15,7 +15,8 @@
   "deno.unstable": false,
   "deno.path": "~/.deno/bin/deno",
   "deno.enablePaths": [
-    "./backend/supabase/functions"
+    "./backend/supabase/functions",
+    "./backend/tests"
   ],
   "files.exclude": {
     "**/.git": true,
