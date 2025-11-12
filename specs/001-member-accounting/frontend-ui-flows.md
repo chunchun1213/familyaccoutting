@@ -3,7 +3,7 @@
 **功能分支**: `001-member-accounting`  
 **建立日期**: 2025-11-12  
 **版本**: 1.0  
-**基於**: [1-Flutter前端設計規格書.md](../../../doc/SDD-Docs/1-Flutter前端設計規格書.md)
+**基於**: [1-Flutter 前端設計規格書.md](../../../doc/SDD-Docs/1-Flutter前端設計規格書.md)
 
 ## 目錄
 
@@ -1202,4 +1202,4 @@ class OfflineQueueService {
 - ✅ **錯誤處理**: 統一的錯誤處理和顯示策略
 - ✅ **本地儲存**: Token 和離線資料的儲存策略
 
-所有設計符合 Constitution 要求和 1-Flutter前端設計規格書.md 的規範。
+所有設計符合 Constitution 要求和 1-Flutter 前端設計規格書.md 的規範。

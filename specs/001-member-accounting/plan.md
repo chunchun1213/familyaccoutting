@@ -8,12 +8,14 @@
 本功能實作完整的會員註冊與登入系統,包含 Email 驗證流程和記帳主頁的基本收支記錄功能。
 
 **主要需求**:
+
 - 使用者可透過 Email 註冊帳號並完成驗證
 - 註冊使用者可使用 Email/密碼登入,支援自動登入(7 天有效期)
 - 登入後可查看財務概覽(總收入、總支出、結餘)
 - 使用者可新增、查看、刪除收支記錄
 
 **技術方案**:
+
 - **前端**: Flutter 3.16+ + Riverpod 狀態管理 + Material 3 UI
 - **後端**: Supabase (Auth + PostgreSQL + Edge Functions) + Hono Server
 - **Email 服務**: Resend Email API
@@ -25,18 +27,21 @@
 ### 前端技術棧
 
 **語言/版本**: Dart 3.2+ (Flutter 3.16+)  
-**主要相依套件**: 
+**主要相依套件**:
+
 - `flutter_riverpod` 2.4.0+ (狀態管理)
 - `dio` 5.4.0+ (HTTP 客戶端)
 - `flutter_secure_storage` 9.0.0+ (安全儲存)
 - `flutter_form_builder` 9.0.0+ (表單處理)
 - Material 3 (UI 元件庫)
 
-**儲存**: 
+**儲存**:
+
 - 本地: flutter_secure_storage (JWT Token、使用者資訊)
 - 本地: shared_preferences (離線佇列)
 
-**測試**: 
+**測試**:
+
 - Flutter Test (Unit/Widget/Integration)
 - Mockito (Mock 物件)
 - 目標覆蓋率: >80%
@@ -49,6 +54,7 @@
 
 **語言/版本**: TypeScript (Deno 2.5.6+)  
 **主要相依套件**:
+
 - Supabase (BaaS 平台)
 - Hono (Web 框架)
 - bcrypt (密碼雜湊)
@@ -65,6 +71,7 @@
 ### 效能目標
 
 **效能目標**:
+
 - API 回應時間: <500ms (p95)
 - 資料庫查詢: <100ms (p95)
 - Email 發送: <30 秒送達
@@ -72,6 +79,7 @@
 - UI 互動回應: <100ms
 
 **限制條件**:
+
 - 會話有效期限: 7 天
 - 驗證碼有效期限: 5 分鐘
 - 單筆交易金額上限: 1,000,000.00
@@ -79,41 +87,37 @@
 - 離線暫存期限: 7 天
 
 **規模/範圍**:
+
 - 初期目標使用者: 1,000 人
 - 預計頁面數: 5 個主要畫面
 - 預計 API 端點: 8 個
 
 ## Constitution 檢核
 
-*關卡:必須在 Phase 0 研究前通過。Phase 1 設計後重新檢核。*
+_關卡:必須在 Phase 0 研究前通過。Phase 1 設計後重新檢核。_
 
 **必要驗證** (基於 `.specify/memory/constitution.md`):
 
-- [x] **程式碼品質**: 
+- [x] **程式碼品質**:
   - Linting: Dart Analysis + ESLint (Deno)
   - Formatting: dart format + deno fmt
   - 文件標準: JSDoc (後端) + Dart Doc (前端)
-  
-- [x] **測試標準**: 
+- [x] **測試標準**:
   - TDD 工作流程: Red-Green-Refactor 循環
   - 測試類型: Unit (>80%), Integration, Widget, E2E
   - 測試框架: Flutter Test + Deno Test
-  
-- [x] **使用者體驗**: 
+- [x] **使用者體驗**:
   - 無障礙: WCAG 2.1 AA 標準
   - 錯誤處理: 統一錯誤訊息格式,繁體中文
   - 互動回饋: 載入指示器、即時驗證、確認對話框
-  
-- [x] **效能**: 
+- [x] **效能**:
   - API: <500ms (p95)
   - UI: <100ms 互動回應
   - 資料庫: <100ms 查詢 (p95)
-  
-- [x] **文件語言**: 
+- [x] **文件語言**:
   - 所有規格文件使用繁體中文
   - UI 文字和錯誤訊息使用繁體中文
-  
-- [x] **品質關卡**: 
+- [x] **品質關卡**:
   - Gate 1: 規格審查 ✓
   - Gate 2: 測試批准 (進行中)
   - Gate 3: 實作審查 (待執行)
@@ -122,23 +126,25 @@
   - Gate 6: 文件完成 ✓
 
 **此功能的效能目標**:
-- API 端點: 
+
+- API 端點:
   - POST /register: <500ms (p95)
   - POST /verify-email: <300ms (p95)
   - POST /login: <300ms (p95)
   - GET /transactions: <500ms (p95)
   - POST /transactions: <400ms (p95)
   - DELETE /transactions/:id: <300ms (p95)
-- UI 互動: 
+- UI 互動:
   - 按鈕回應: <100ms
   - 頁面載入: <2s (初次), <1s (後續)
   - 表單驗證: 即時 (<50ms)
-- 資料庫查詢: 
+- 資料庫查詢:
   - User lookup: <50ms
   - Transaction list (100 items): <100ms
   - Aggregate queries (sum): <80ms
 
 **語言合規性**:
+
 - [x] plan.md 使用繁體中文撰寫
 - [x] spec.md 使用繁體中文撰寫
 - [x] tasks.md 將使用繁體中文撰寫
@@ -259,5 +265,5 @@ frontend/
 > **僅在 Constitution Check 有需要理由的違規項目時填寫**
 
 | 違規項目 | 為何需要 | 拒絕更簡單替代方案的原因 |
-|---------|---------|------------------------|
-| 無 | N/A | N/A |
+| -------- | -------- | ------------------------ |
+| 無       | N/A      | N/A                      |
