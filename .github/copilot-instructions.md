@@ -3,6 +3,7 @@
 Auto-generated from all feature plans. Last updated: 2025-11-05
 
 ## Active Technologies
+- Dart 3.2+ (Flutter 3.16+) (001-member-accounting)
 
 - (001-member-accounting)
 
@@ -22,6 +23,7 @@ tests/
 : Follow standard conventions
 
 ## Recent Changes
+- 001-member-accounting: Added Dart 3.2+ (Flutter 3.16+)
 
 - 001-member-accounting: Added
 
